@@ -16,18 +16,20 @@ import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.session.Session;
 import com.logmein.rescuesdk.api.session.SessionFactory;
 import com.logmein.rescuesdk.api.session.config.SessionConfig;
-import com.logmein.rescuesdk.api.session.event.ConnectedEvent;
 import com.logmein.rescuesdk.api.session.event.ConnectingEvent;
 import com.logmein.rescuesdk.api.session.event.DisconnectedEvent;
 import com.logmein.rescuesdk.api.session.event.NoSuchChannelEvent;
-import com.logmein.rescuesdkdemo.adapter.LogsAdapter;
+import com.logmein.rescuesdkdemo.adapter.ChatLogAdapter;
 import com.logmein.rescuesdkdemo.config.Config;
 import com.logmein.rescuesdkdemo.dialog.ChannelSetterDialogFragment;
 import com.logmein.rescuesdkdemo.dialog.DialogFragmentUtils;
-import com.logmein.rescuesdkdemo.eventhandler.ChatEventHandler;
-import com.logmein.rescuesdkdemo.eventhandler.ConnectionEventHandler;
+import com.logmein.rescuesdkdemo.eventhandler.ChatMessagePresenter;
+import com.logmein.rescuesdkdemo.eventhandler.ChatSendPresenter;
+import com.logmein.rescuesdkdemo.eventhandler.ConnectionButtonPresenter;
+import com.logmein.rescuesdkdemo.eventhandler.ConnectionStatusPresenter;
 import com.logmein.rescuesdkdemo.eventhandler.ErrorEventHandler;
-import com.logmein.rescuesdkdemo.eventhandler.RcEventHandler;
+import com.logmein.rescuesdkdemo.eventhandler.StopDisplaySharingPresenter;
+import com.logmein.rescuesdkdemo.eventhandler.TypingPresenter;
 import com.logmein.rescuesdkresources.StringResolver;
 
 import java.util.ArrayList;
@@ -72,7 +74,7 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
 
     private Session rescueSession;
     private List<Object> eventHandlers;
-    private LogsAdapter logAdapter;
+    private ChatLogAdapter logAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +85,7 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
         buttonConnection.setOnClickListener(new CreateSessionStrategy());
 
         final ListView logsView = (ListView) findViewById(R.id.listLogs);
-        logAdapter = new LogsAdapter(this);
+        logAdapter = new ChatLogAdapter(this);
 
         logsView.setAdapter(logAdapter);
     }
@@ -131,19 +133,37 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
                 // Now we set up our event handlers and add them to the session's event bus.
                 // We store them in a list so that we can remove them from the bus later in the
                 // cleanup() method.
-                logAdapter.onSessionCreated(rescueSession);
+
                 eventHandlers = new ArrayList<Object>();
+
+                logAdapter.onSessionCreated(session);
                 eventHandlers.add(logAdapter);
-                eventHandlers.add(new ConnectionEventHandler((TextView) findViewById(R.id.textConnectionStatus), (Button) findViewById(R.id.buttonConnection)));
-                eventHandlers.add(new ChatEventHandler((EditText) findViewById(R.id.editChatMessage), (Button) findViewById(R.id.buttonChatSend), (TextView) findViewById(R.id.textTypingNotification)));
-                eventHandlers.add(new RcEventHandler((Button) findViewById(R.id.buttonStopRc)));
-                eventHandlers.add(new ErrorEventHandler(buttonConnection, getSupportFragmentManager(), new StringResolver(RescueSdkDemoActivity.this, rescueSession)));
+
+                TextView textConnectionStatus = (TextView) findViewById(R.id.textConnectionStatus);
+                eventHandlers.add(new ConnectionStatusPresenter(textConnectionStatus));
+
+                Button connectionButton =  (Button) findViewById(R.id.buttonConnection);
+                eventHandlers.add(new ConnectionButtonPresenter(connectionButton));
+
+                EditText chatMessage = (EditText) findViewById(R.id.editChatMessage);
+                eventHandlers.add(new ChatMessagePresenter(chatMessage));
+
+                Button chatSend = (Button) findViewById(R.id.buttonChatSend);
+                eventHandlers.add(new ChatSendPresenter(chatSend, chatMessage));
+
+                TextView typing = (TextView) findViewById(R.id.textTypingNotification);
+                eventHandlers.add(new TypingPresenter(typing));
+
+                Button stopRcButton = (Button) findViewById(R.id.buttonStopRc);
+                eventHandlers.add(new StopDisplaySharingPresenter(stopRcButton));
+
+                StringResolver resolver = new StringResolver(RescueSdkDemoActivity.this, rescueSession);
+
+                eventHandlers.add(new ErrorEventHandler(buttonConnection, getSupportFragmentManager(), resolver));
                 eventHandlers.add(RescueSdkDemoActivity.this);
                 for (final Object eventHandler : eventHandlers) {
                     rescueSession.getEventBus().add(eventHandler);
                 }
-
-                logAdapter.clear();
 
                 // After everything is set up, we connect the session to the channel.
                 rescueSession.connect(SessionConfig.createWithChannelId(channelId));
