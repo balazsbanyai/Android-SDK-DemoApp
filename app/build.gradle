@@ -1,0 +1,64 @@
+apply plugin: 'com.android.application'
+
+repositories {
+    jcenter()
+
+    mavenLocal()
+
+    maven {
+        url 'https://raw.githubusercontent.com/logmeinrescue/android-sdk/master/maven/repository'
+    }
+}
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.0'
+
+    signingConfigs {
+        lmiSignConfig {
+            storeFile file(project.lmikeystoreLocation)
+            storePassword project.lmikeystorePassword
+            keyAlias project.lmikeyAlias
+            keyPassword project.lmikeyPassword
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+    }
+    defaultConfig {
+        applicationId "com.logmein.rescuesdkdemo"
+        minSdkVersion 10
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.lmiSignConfig
+        }
+    }
+    compileSdkVersion 23
+    buildToolsVersion '23.0.0'
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:23.0.1'
+
+    // Default logger implementation (optional)
+    compile 'org.slf4j:slf4j-android:1.7.12'
+
+    // Basic SDK dependency
+    compile('com.logmein.rescuesdk:core:1.0.0@aar') {
+        transitive = true
+    }
+
+    // SDK Resource dependency (optional)
+    compile('com.logmein.rescuesdk:resources:1.0.0@aar') {
+        transitive = false
+    }
+}
