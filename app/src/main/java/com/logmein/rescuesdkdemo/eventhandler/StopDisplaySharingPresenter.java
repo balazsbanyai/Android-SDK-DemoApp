@@ -9,7 +9,7 @@ import com.logmein.rescuesdk.api.remoteview.event.RemoteViewStartedEvent;
 import com.logmein.rescuesdk.api.remoteview.event.RemoteViewStoppedEvent;
 
 /**
- * Created by bbanyai on 15/10/15.
+ * Manipulates the display sharing button based on the related events
  */
 public class StopDisplaySharingPresenter {
     private Button stopDisplaySharing;

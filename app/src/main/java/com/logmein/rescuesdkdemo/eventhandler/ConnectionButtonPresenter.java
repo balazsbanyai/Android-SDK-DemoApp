@@ -8,7 +8,7 @@ import com.logmein.rescuesdk.api.session.event.DisconnectedEvent;
 import com.logmein.rescuesdkdemo.R;
 
 /**
- * Created by bbanyai on 15/10/15.
+ * Manipulates the connection button based on the related events.
  */
 public class ConnectionButtonPresenter {
     private Button connectionButton;

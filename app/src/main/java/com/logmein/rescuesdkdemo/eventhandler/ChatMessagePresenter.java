@@ -11,7 +11,7 @@ import com.logmein.rescuesdk.api.chat.event.ChatDisconnectedEvent;
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
 
 /**
- * Created by bbanyai on 15/10/15.
+ * Manipulates the chat message view based on the related events.
  */
 public class ChatMessagePresenter {
     private EditText chatMessage;

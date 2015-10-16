@@ -13,7 +13,7 @@ import com.logmein.rescuesdkresources.StringResolver;
 import java.lang.ref.WeakReference;
 
 /**
- * Created by bbanyai on 14/10/15.
+ * Shows an error dialog when an ErrorEvent is received.
  */
 public class ErrorEventHandler {
     private final StringResolver stringResolver;

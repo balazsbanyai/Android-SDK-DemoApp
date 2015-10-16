@@ -12,7 +12,7 @@ import com.logmein.rescuesdkdemo.config.Config;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Created by bbanyai on 15/10/15.
+ * Manipulates the typing notification view based on the related events
  */
 public class TypingPresenter {
 
