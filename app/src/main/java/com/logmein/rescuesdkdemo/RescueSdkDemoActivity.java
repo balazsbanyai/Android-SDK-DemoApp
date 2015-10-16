@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.session.Session;
@@ -18,7 +17,6 @@ import com.logmein.rescuesdk.api.session.SessionFactory;
 import com.logmein.rescuesdk.api.session.config.SessionConfig;
 import com.logmein.rescuesdk.api.session.event.ConnectingEvent;
 import com.logmein.rescuesdk.api.session.event.DisconnectedEvent;
-import com.logmein.rescuesdk.api.session.event.NoSuchChannelEvent;
 import com.logmein.rescuesdkdemo.adapter.ChatLogAdapter;
 import com.logmein.rescuesdkdemo.config.Config;
 import com.logmein.rescuesdkdemo.dialog.ChannelSetterDialogFragment;
@@ -34,7 +32,6 @@ import com.logmein.rescuesdkresources.StringResolver;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Activity to demonstrate RescueSDK features.
@@ -63,15 +60,14 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            buttonConnection.setEnabled(false);
+            connectionButton.setEnabled(false);
             if (rescueSession != null) {
                 rescueSession.disconnect();
             }
         }
     }
 
-    private Button buttonConnection;
-
+    private Button connectionButton;
     private Session rescueSession;
     private List<Object> eventHandlers;
     private ChatLogAdapter logAdapter;
@@ -81,8 +77,8 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rescue_sdk_demo);
 
-        buttonConnection = (Button) findViewById(R.id.buttonConnection);
-        buttonConnection.setOnClickListener(new CreateSessionStrategy());
+        connectionButton = (Button) findViewById(R.id.buttonConnection);
+        connectionButton.setOnClickListener(new CreateSessionStrategy());
 
         final ListView logsView = (ListView) findViewById(R.id.listLogs);
         logAdapter = new ChatLogAdapter(this);
@@ -109,7 +105,7 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
      * @param channelId The id of the channel to join to.
      */
     private void startSession(final String channelId) {
-        buttonConnection.setEnabled(false);
+        connectionButton.setEnabled(false);
 
         cleanup();
 
@@ -118,7 +114,7 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
         AsyncTask<Void, Void, Session> sessionStarterTask = new AsyncTask<Void, Void, Session>() {
             @Override
             protected Session doInBackground(Void... params) {
-                return SessionFactory.newInstance().create(RescueSdkDemoActivity.this);
+                return SessionFactory.newInstance().create(getApplicationContext());
             }
 
             @Override
@@ -159,7 +155,7 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
 
                 StringResolver resolver = new StringResolver(RescueSdkDemoActivity.this, rescueSession);
 
-                eventHandlers.add(new ErrorEventHandler(buttonConnection, getSupportFragmentManager(), resolver));
+                eventHandlers.add(new ErrorEventHandler(RescueSdkDemoActivity.this.connectionButton, getSupportFragmentManager(), resolver));
                 eventHandlers.add(RescueSdkDemoActivity.this);
                 for (final Object eventHandler : eventHandlers) {
                     rescueSession.getEventBus().add(eventHandler);
@@ -206,7 +202,7 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
      */
     @Subscribe
     public void onConnectingEvent(ConnectingEvent event) {
-        buttonConnection.setOnClickListener(new DisconnectSessionStrategy());
+        connectionButton.setOnClickListener(new DisconnectSessionStrategy());
     }
 
     /**
@@ -216,7 +212,7 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
      */
     @Subscribe
     public void onDisconnectedEvent(DisconnectedEvent event) {
-        buttonConnection.setOnClickListener(new CreateSessionStrategy());
+        connectionButton.setOnClickListener(new CreateSessionStrategy());
     }
 
 }
