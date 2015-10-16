@@ -13,10 +13,9 @@ import com.logmein.rescuesdkresources.StringResolver;
 import java.lang.ref.WeakReference;
 
 /**
- * Groups and handles error-related events.
+ * Shows an error dialog when an ErrorEvent is received.
  */
-public final class ErrorEventHandler {
-
+public class ErrorEventHandler {
     private final StringResolver stringResolver;
     private WeakReference<Button> buttonConnect;
     private WeakReference<FragmentManager> fragmentManager;

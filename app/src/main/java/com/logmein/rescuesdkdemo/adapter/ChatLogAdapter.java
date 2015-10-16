@@ -30,7 +30,7 @@ import java.util.Locale;
 /**
  * Simple adapter to display event logs and chat messages in a ListView.
  */
-public class LogsAdapter extends BaseAdapter {
+public class ChatLogAdapter extends BaseAdapter {
 
     private static final String LOG_OWN_CHAT_MESSAGE = "%s: %s";
     private static final String TIMESTAMP_FORMAT = "[%s]";
@@ -40,7 +40,7 @@ public class LogsAdapter extends BaseAdapter {
     private StringResolver stringResolver;
     private final List<ChatMessageHolder> messages = new ArrayList<ChatMessageHolder>();
 
-    public LogsAdapter(Context context) {
+    public ChatLogAdapter(Context context) {
         this.context = context;
     }
 
