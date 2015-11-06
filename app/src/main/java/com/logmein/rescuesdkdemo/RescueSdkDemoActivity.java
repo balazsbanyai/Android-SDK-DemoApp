@@ -1,8 +1,9 @@
 package com.logmein.rescuesdkdemo;
 
-import android.os.AsyncTask;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -19,7 +20,7 @@ import com.logmein.rescuesdk.api.session.event.ConnectingEvent;
 import com.logmein.rescuesdk.api.session.event.DisconnectedEvent;
 import com.logmein.rescuesdkdemo.adapter.ChatLogAdapter;
 import com.logmein.rescuesdkdemo.config.Config;
-import com.logmein.rescuesdkdemo.dialog.ChannelSetterDialogFragment;
+import com.logmein.rescuesdkdemo.dialog.ConfigSetterDialogFragment;
 import com.logmein.rescuesdkdemo.dialog.DialogFragmentUtils;
 import com.logmein.rescuesdkdemo.eventhandler.ChatMessagePresenter;
 import com.logmein.rescuesdkdemo.eventhandler.ChatSendPresenter;
@@ -45,10 +46,10 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            if (TextUtils.isEmpty(Config.CHANNEL_ID)) {
+            if (TextUtils.isEmpty(Config.CHANNEL_ID) || TextUtils.isEmpty(Config.API_KEY)) {
                 showChannelIdSetter();
             } else {
-                startSession(Config.CHANNEL_ID);
+                startSession(Config.CHANNEL_ID, Config.API_KEY);
             }
         }
     }
@@ -90,13 +91,21 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
      * Shows the channel id setter dialog.
      */
     private void showChannelIdSetter() {
-        DialogFragmentUtils.showFragmentAndDismissPrevious(getSupportFragmentManager(), ChannelSetterDialogFragment.newInstance(new ChannelSetterDialogFragment.ChannelSetListener() {
+
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        DialogFragment dialogFragment = ConfigSetterDialogFragment.newInstance(new ConfigSetterDialogFragment.ConfigSetListener() {
             @Override
-            public void onChannelIdSet(String channelId) {
-                PreferenceManager.getDefaultSharedPreferences(RescueSdkDemoActivity.this).edit().putString(Config.PREFERENCE_CHANNEL_ID, channelId).commit();
-                startSession(channelId);
+            public void onConfigSet(String channelId, String apiKey) {
+                sharedPreferences.edit()
+                        .putString(Config.PREFERENCE_CHANNEL_ID, channelId)
+                        .putString(Config.PREFERENCE_API_KEY, apiKey)
+                        .commit();
+
+                startSession(channelId, apiKey);
             }
-        }, PreferenceManager.getDefaultSharedPreferences(this).getString(Config.PREFERENCE_CHANNEL_ID, null)), ChannelSetterDialogFragment.TAG);
+        }, sharedPreferences.getString(Config.PREFERENCE_CHANNEL_ID, null), sharedPreferences.getString(Config.PREFERENCE_API_KEY, null));
+
+        DialogFragmentUtils.showFragmentAndDismissPrevious(getSupportFragmentManager(), dialogFragment, ConfigSetterDialogFragment.TAG);
     }
 
     /**
@@ -104,32 +113,20 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
      *
      * @param channelId The id of the channel to join to.
      */
-    private void startSession(final String channelId) {
+    private void startSession(final String channelId, final String apiKey) {
         connectionButton.setEnabled(false);
 
         cleanup();
 
-        // Creating a Session object may take a considerable amount of time so we create a task
-        // that will invoke it from a worker thread.
-        AsyncTask<Void, Void, Session> sessionStarterTask = new AsyncTask<Void, Void, Session>() {
+        SessionFactory.newInstance().create(getApplicationContext(), apiKey, new SessionFactory.SessionCreationCallback() {
             @Override
-            protected Session doInBackground(Void... params) {
-                return SessionFactory.newInstance().create(getApplicationContext());
-            }
-
-            @Override
-            protected void onPostExecute(Session session) {
-                // This is executed on the UI thread after the Session object has been created on the
-                // worker thread.
-
-                super.onPostExecute(session);
+            public void onSessionCreated(Session session) {
 
                 rescueSession = session;
 
                 // Now we set up our event handlers and add them to the session's event bus.
                 // We store them in a list so that we can remove them from the bus later in the
                 // cleanup() method.
-
                 eventHandlers = new ArrayList<Object>();
 
                 logAdapter.onSessionCreated(session);
@@ -138,7 +135,7 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
                 TextView textConnectionStatus = (TextView) findViewById(R.id.textConnectionStatus);
                 eventHandlers.add(new ConnectionStatusPresenter(textConnectionStatus));
 
-                Button connectionButton =  (Button) findViewById(R.id.buttonConnection);
+                Button connectionButton = (Button) findViewById(R.id.buttonConnection);
                 eventHandlers.add(new ConnectionButtonPresenter(connectionButton));
 
                 EditText chatMessage = (EditText) findViewById(R.id.editChatMessage);
@@ -164,10 +161,7 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
                 // After everything is set up, we connect the session to the channel.
                 rescueSession.connect(SessionConfig.createWithChannelId(channelId));
             }
-        };
-
-        // Start the task
-        sessionStarterTask.execute();
+        });
     }
 
     /**
@@ -214,5 +208,4 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
     public void onDisconnectedEvent(DisconnectedEvent event) {
         connectionButton.setOnClickListener(new CreateSessionStrategy());
     }
-
 }
