@@ -73,7 +73,7 @@ public class ConfigSetterDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final View content = getActivity().getLayoutInflater().inflate(R.layout.channel_setter_dialog, null);
+        final View content = getActivity().getLayoutInflater().inflate(R.layout.config_setter_dialog, null);
         editChannelId = (EditText) content.findViewById(R.id.editChannelId);
         editChannelId.setText(previousChannelId);
         editChannelId.addTextChangedListener(new TextWatcher() {
