@@ -17,34 +17,37 @@ import com.logmein.rescuesdkdemo.R;
 /**
  * DialogFragment to display the disclaimer dialog when the Config.CHANNEL_ID constant is empty. Also enables to type a channel ID for immediate use.
  */
-public class ChannelSetterDialogFragment extends DialogFragment {
+public class ConfigSetterDialogFragment extends DialogFragment {
 
     public static final String TAG = "ChannelSetterDialog";
 
-    public interface ChannelSetListener {
-        public void onChannelIdSet(final String channelId);
+    public interface ConfigSetListener {
+        public void onConfigSet(final String channelId, String apiKey);
     }
 
     /**
-     * Factory method to produce ChannelSetterDialogFragment instance. Use this method for instantiation.
-     * @param listener The ChannelSetListener implementation to receive callback when the channel Id is set.
+     * Factory method to produce ConfigSetterDialogFragment instance. Use this method for instantiation.
+     * @param listener The ConfigSetListener implementation to receive callback when the channel Id is set.
      * @param previousChannelId The previously entered channel Id.
-     * @return ChannelSetterDialogFragment instance.
+     * @return ConfigSetterDialogFragment instance.
      */
-    public static ChannelSetterDialogFragment newInstance(final ChannelSetListener listener, final String previousChannelId) {
-        final ChannelSetterDialogFragment fragment = new ChannelSetterDialogFragment();
-        fragment.setChannelSetListener(listener);
+    public static ConfigSetterDialogFragment newInstance(final ConfigSetListener listener, final String previousChannelId, final String previousApiKey) {
+        final ConfigSetterDialogFragment fragment = new ConfigSetterDialogFragment();
+        fragment.setConfigSetListener(listener);
         fragment.setPreviousChannelId(previousChannelId);
+        fragment.setPreviousApiKey(previousApiKey);
         fragment.setCancelable(false);
         return fragment;
     }
 
-    private ChannelSetListener channelSetListener;
+    private ConfigSetListener configSetListener;
     private EditText editChannelId;
+    private EditText editApiKey;
     private String previousChannelId;
+    private String previousApiKey;
 
     /**
-     * The previously set channel Id. This Id will appear in in the editText the dialog is shown.
+     * The previously set channel Id. This Id will appear in an editText inside the shown dialog.
      * @param previousChannelId The previous channel Id.
      */
     public void setPreviousChannelId(String previousChannelId) {
@@ -52,42 +55,69 @@ public class ChannelSetterDialogFragment extends DialogFragment {
     }
 
     /**
-     * Sets the ChannelSetListener to receive callback when the channel Id is set.
-     * @param channelSetListener ChannelSetListener implementation.
+     * The previously set Api Key. This Key will appear in an editText inside the shown dialog.
+     * @param previousApiKey The previous Api Key.
      */
-    private void setChannelSetListener(ChannelSetListener channelSetListener) {
-        this.channelSetListener = channelSetListener;
+    public void setPreviousApiKey(String previousApiKey) {
+        this.previousApiKey = previousApiKey;
+    }
+
+    /**
+     * Sets the ConfigSetListener to receive callback when the channel Id is set.
+     * @param configSetListener ConfigSetListener implementation.
+     */
+    private void setConfigSetListener(ConfigSetListener configSetListener) {
+        this.configSetListener = configSetListener;
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final View content = getActivity().getLayoutInflater().inflate(R.layout.channel_setter_dialog, null);
+        final View content = getActivity().getLayoutInflater().inflate(R.layout.config_setter_dialog, null);
         editChannelId = (EditText) content.findViewById(R.id.editChannelId);
         editChannelId.setText(previousChannelId);
         editChannelId.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 final String text = s.toString();
-                if (isValidChannelId(text)) {
+                if (isFieldValid(text)) {
                     editChannelId.setError(null);
                 } else {
-                    editChannelId.setError(getString(R.string.invalid_channel_id));
+                    editChannelId.setError(getString(R.string.empty_field));
                 }
             }
         });
+        editApiKey = (EditText) content.findViewById(R.id.editApiKey);
+        editApiKey.setText(previousApiKey);
+        editApiKey.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (isFieldValid(s.toString())) {
+                    editApiKey.setError(null);
+                } else {
+                    editApiKey.setError(getString(R.string.empty_field));
+                }
+            }
+        });
+
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.channel_id_dialog_title)
+        builder.setTitle(R.string.sessionconfig_dialog_title)
                 .setView(content)
                 // Button clicks are handled by the DialogFragment!
                 .setPositiveButton(android.R.string.ok, null)
@@ -105,14 +135,20 @@ public class ChannelSetterDialogFragment extends DialogFragment {
             positiveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    dialog.dismiss();
                     final String channelId = editChannelId.getText().toString();
-                    if (isValidChannelId(channelId)) {
-                        if (channelSetListener != null) {
-                            channelSetListener.onChannelIdSet(channelId);
+                    final String apiKey = editApiKey.getText().toString();
+                    if (isFieldValid(channelId) && isFieldValid(apiKey)) {
+                        if (configSetListener != null) {
+                            configSetListener.onConfigSet(channelId, apiKey);
+                            dialog.dismiss();
                         }
                     } else {
-                        editChannelId.setError(getString(R.string.invalid_channel_id));
+                        if (!isFieldValid(channelId)) {
+                            editChannelId.setError(getString(R.string.empty_field));
+                        }
+                        if (!isFieldValid(apiKey)) {
+                            editApiKey.setError(getString(R.string.empty_field));
+                        }
                     }
                 }
             });
@@ -126,7 +162,7 @@ public class ChannelSetterDialogFragment extends DialogFragment {
         }
     }
 
-    private boolean isValidChannelId(final String channelId) {
+    private boolean isFieldValid(final String channelId) {
         return !TextUtils.isEmpty(channelId.trim());
     }
 }

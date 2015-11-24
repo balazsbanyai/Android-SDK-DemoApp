@@ -44,12 +44,12 @@ dependencies {
     compile 'org.slf4j:slf4j-android:1.7.12'
 
     // Basic SDK dependency
-    compile('com.logmein.rescuesdk:core:1.0.0@aar') {
+    compile('com.logmein.rescuesdk:core:latest.integration@aar') {
         transitive = true
     }
 
     // SDK Resource dependency (optional)
-    compile('com.logmein.rescuesdk:resources:1.0.0@aar') {
+    compile('com.logmein.rescuesdk:resources:latest.integration@aar') {
         transitive = false
     }
 }
