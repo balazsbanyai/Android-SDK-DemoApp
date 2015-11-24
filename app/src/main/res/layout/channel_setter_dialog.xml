@@ -37,7 +37,6 @@
         android:id="@+id/editApiKey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
         android:hint="@string/hint_apiKey"/>
 
 </LinearLayout>
