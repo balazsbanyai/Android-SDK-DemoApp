@@ -1,6 +1,7 @@
 package com.logmein.rescuesdkdemo;
 
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
@@ -118,9 +119,15 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
 
         cleanup();
 
-        SessionFactory.newInstance().create(getApplicationContext(), apiKey, new SessionFactory.SessionCreationCallback() {
+        new AsyncTask<Void, Void, Session>() {
             @Override
-            public void onSessionCreated(Session session) {
+            protected Session doInBackground(Void... params) {
+                return SessionFactory.newInstance().create(getApplicationContext());
+            }
+
+            @Override
+            protected void onPostExecute(Session session) {
+                super.onPostExecute(session);
 
                 rescueSession = session;
 
@@ -161,7 +168,8 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
                 // After everything is set up, we connect the session to the channel.
                 rescueSession.connect(SessionConfig.createWithChannelId(channelId));
             }
-        });
+        }.execute();
+
     }
 
     /**
