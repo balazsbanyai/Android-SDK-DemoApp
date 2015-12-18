@@ -16,7 +16,6 @@ import com.logmein.rescuesdk.api.chat.event.UrlMessageEvent;
 import com.logmein.rescuesdk.api.event.Event;
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.remoteview.event.RemoteViewEvent;
-import com.logmein.rescuesdk.api.session.Session;
 import com.logmein.rescuesdk.api.session.event.ConnectionEvent;
 import com.logmein.rescuesdkdemo.R;
 import com.logmein.rescuesdkresources.StringResolver;
@@ -79,8 +78,8 @@ public class ChatLogAdapter extends BaseAdapter {
         return view;
     }
 
-    public void onSessionCreated(Session session) {
-        stringResolver = new StringResolver(context, session);
+    public void setStringResolver(StringResolver stringResolver) {
+        this.stringResolver = stringResolver;
     }
 
     public void clear() {
@@ -97,7 +96,7 @@ public class ChatLogAdapter extends BaseAdapter {
 
     @Subscribe
     public void onLocalChatMessageEvent(LocalChatMessageEvent event) {
-        String resolvedMessage = String.format(Locale.US, LOG_OWN_CHAT_MESSAGE, context.getString(R.string.chat_prefix), event.getMessage());
+        String resolvedMessage = stringResolver.resolve(event);
         ChatMessageHolder messageHolder = new ChatMessageHolder(resolvedMessage, event.getTime());
         addChatMessage(messageHolder);
     }

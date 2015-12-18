@@ -56,7 +56,6 @@
             android:id="@+id/textTypingNotification"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/technician_typing"
             android:visibility="invisible"
             tools:text="Typing..." />
 
