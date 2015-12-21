@@ -1,7 +1,6 @@
 package com.logmein.rescuesdkdemo;
 
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
@@ -119,16 +118,9 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
 
         cleanup();
 
-        new AsyncTask<Void, Void, Session>() {
+        SessionFactory.newInstance().create(getApplicationContext(), apiKey, new SessionFactory.SessionCreationCallback() {
             @Override
-            protected Session doInBackground(Void... params) {
-                return SessionFactory.newInstance().create(getApplicationContext());
-            }
-
-            @Override
-            protected void onPostExecute(Session session) {
-                super.onPostExecute(session);
-
+            public void onSessionCreated(Session session) {
                 rescueSession = session;
 
                 // Now we set up our event handlers and add them to the session's event bus.
@@ -136,7 +128,8 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
                 // cleanup() method.
                 eventHandlers = new ArrayList<Object>();
 
-                logAdapter.onSessionCreated(session);
+                StringResolver resolver = new StringResolver(RescueSdkDemoActivity.this, session);
+                logAdapter.setStringResolver(resolver);
                 eventHandlers.add(logAdapter);
 
                 TextView textConnectionStatus = (TextView) findViewById(R.id.textConnectionStatus);
@@ -152,12 +145,10 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
                 eventHandlers.add(new ChatSendPresenter(chatSend, chatMessage));
 
                 TextView typing = (TextView) findViewById(R.id.textTypingNotification);
-                eventHandlers.add(new TypingPresenter(typing));
+                eventHandlers.add(new TypingPresenter(typing, resolver));
 
                 Button stopRcButton = (Button) findViewById(R.id.buttonStopRc);
                 eventHandlers.add(new StopDisplaySharingPresenter(stopRcButton));
-
-                StringResolver resolver = new StringResolver(RescueSdkDemoActivity.this, rescueSession);
 
                 eventHandlers.add(new ErrorEventHandler(RescueSdkDemoActivity.this.connectionButton, getSupportFragmentManager(), resolver));
                 eventHandlers.add(RescueSdkDemoActivity.this);
@@ -168,7 +159,7 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
                 // After everything is set up, we connect the session to the channel.
                 rescueSession.connect(SessionConfig.createWithChannelId(channelId));
             }
-        }.execute();
+        });
 
     }
 

@@ -2,12 +2,12 @@ package com.logmein.rescuesdkdemo.eventhandler;
 
 import android.os.CountDownTimer;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.logmein.rescuesdk.api.chat.event.TechnicianTypingEvent;
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdkdemo.config.Config;
+import com.logmein.rescuesdkresources.StringResolver;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -21,9 +21,11 @@ public class TypingPresenter {
     private final CountDownTimer technicianTypingAppearanceTimer;
     private TextView typingStatus;
     private AtomicBoolean isTechnicianTyping;
+    private StringResolver stringResolver;
 
-    public TypingPresenter(TextView typingStatus) {
+    public TypingPresenter(TextView typingStatus, StringResolver stringResolver) {
         this.typingStatus = typingStatus;
+        this.stringResolver = stringResolver;
 
         isTechnicianTyping = new AtomicBoolean(false);
         technicianTypingAppearanceTimer = new CountDownTimer(Config.TYPING_NOTIFICATION_VISIBILITY_DURATION, COUNTDOWN_INTERVAL) {
@@ -44,6 +46,7 @@ public class TypingPresenter {
     public void onTechnicianTyping(TechnicianTypingEvent event) {
         if (!isTechnicianTyping.getAndSet(true)) {
             typingStatus.setVisibility(View.VISIBLE);
+            typingStatus.setText(stringResolver.resolve(event));
         } else {
             technicianTypingAppearanceTimer.cancel();
         }
