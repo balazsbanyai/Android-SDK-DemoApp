@@ -120,8 +120,10 @@ public class ConfigSetterDialogFragment extends DialogFragment {
         builder.setTitle(R.string.sessionconfig_dialog_title)
                 .setView(content)
                 // Button clicks are handled by the DialogFragment!
-                .setPositiveButton(android.R.string.ok, null)
-                .setNegativeButton(R.string.exit, null);
+                .setPositiveButton(android.R.string.ok, null);
+
+
+        setCancelable(true);
         return builder.create();
     }
 
@@ -150,13 +152,6 @@ public class ConfigSetterDialogFragment extends DialogFragment {
                             editApiKey.setError(getString(R.string.empty_field));
                         }
                     }
-                }
-            });
-            Button negativeButton = dialog.getButton(Dialog.BUTTON_NEGATIVE);
-            negativeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    getActivity().finish();
                 }
             });
         }

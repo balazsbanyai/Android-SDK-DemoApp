@@ -40,7 +40,7 @@ import java.util.List;
 public class RescueSdkDemoActivity extends AppCompatActivity {
 
     /**
-     * OnClickListener implementation which initiates Session connection to the given channel..
+     * OnClickListener implementation which initiates Session connection to the given channel.
      */
     private class CreateSessionStrategy implements View.OnClickListener {
 
