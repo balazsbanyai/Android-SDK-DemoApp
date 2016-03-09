@@ -14,25 +14,50 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <Button
+            android:id="@+id/buttonConnectPin"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="@string/connect_pin"/>
+        <Button
+            android:id="@+id/buttonConnectChannel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="@string/connect" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sessionStatusContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/connectionContainer"
+        android:visibility="gone">
+
         <TextView
             android:id="@+id/textConnectionStatus"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
             android:text="@string/disconnected" />
-
         <Button
             android:id="@+id/buttonStopRc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:text="@string/stop_rc"
             android:visibility="invisible" />
-
         <Button
-            android:id="@+id/buttonConnection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/connect" />
+            android:id="@+id/buttonDisconnect"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="@string/disconnect" />
+
     </LinearLayout>
 
     <ListView
@@ -40,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/chatControlContainer"
-        android:layout_below="@+id/connectionContainer"
+        android:layout_below="@+id/sessionStatusContainer"
         android:stackFromBottom="true"
         android:transcriptMode="alwaysScroll" />
 

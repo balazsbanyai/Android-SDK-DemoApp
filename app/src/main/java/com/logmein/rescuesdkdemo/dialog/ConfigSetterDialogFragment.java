@@ -36,7 +36,6 @@ public class ConfigSetterDialogFragment extends DialogFragment {
         fragment.setConfigSetListener(listener);
         fragment.setPreviousChannelId(previousChannelId);
         fragment.setPreviousApiKey(previousApiKey);
-        fragment.setCancelable(false);
         return fragment;
     }
 
@@ -157,7 +156,7 @@ public class ConfigSetterDialogFragment extends DialogFragment {
         }
     }
 
-    private boolean isFieldValid(final String channelId) {
-        return !TextUtils.isEmpty(channelId.trim());
+    private boolean isFieldValid(final String value) {
+        return !TextUtils.isEmpty(value.trim());
     }
 }

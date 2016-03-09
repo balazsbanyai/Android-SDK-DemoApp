@@ -22,20 +22,16 @@ public class ErrorEventHandler {
 
     /**
      * Constructs an ErrorEventHandler instance with the given parameters.
-     * @param buttonConnect The Button which fires the connect/disconnect action.
      * @param fragmentManager The FragmentManager instance which provides the fragment APIs.
      */
-    public ErrorEventHandler(final Button buttonConnect, final FragmentManager fragmentManager, StringResolver stringResolver) {
-        this.buttonConnect = new WeakReference<Button>(buttonConnect);
+    public ErrorEventHandler(final FragmentManager fragmentManager, StringResolver stringResolver) {
         this.fragmentManager = new WeakReference<FragmentManager>(fragmentManager);
         this.stringResolver = stringResolver;
     }
 
     @Subscribe
     public void onErrorEvent(ConnectionErrorEvent event) {
-        if (buttonConnect.get() != null) {
-            buttonConnect.get().setEnabled(true);
-        }
+
         final FragmentManager fragmentManager = this.fragmentManager.get();
         if (fragmentManager != null) {
             final String message = stringResolver.resolve(event);
