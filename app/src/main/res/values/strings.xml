@@ -30,4 +30,12 @@
     <string name="error_title">Error</string>
     <string name="stop_rc">Stop RC</string>
     <string name="error_no_such_channel">The channel (id: %s) doesn\'t exist!</string>
+    <string name="not_set">not set</string>
+    <string name="api_key_label">API key</string>
+    <string name="pin_mode_label">Start with PIN code</string>
+    <string name="channelid_mode_label">Start with channel ID</string>
+    <string name="channelid_label">Channel ID</string>
+    <string name="channel_name_company_id_mode_label">Start with channel name and company ID</string>
+    <string name="channel_name_label">Channel Name</string>
+    <string name="company_id_label">Company ID</string>
 </resources>
