@@ -15,7 +15,7 @@ import android.widget.EditText;
 import com.logmein.rescuesdkdemo.R;
 
 /**
- * DialogFragment to display the disclaimer dialog when the Config.CHANNEL_ID constant is empty. Also enables to type a channel ID for immediate use.
+ * DialogFragment to display the disclaimer dialog when the Config.CHANNEL_ID_KEY constant is empty. Also enables to type a channel ID for immediate use.
  */
 public class ConfigSetterDialogFragment extends DialogFragment {
 

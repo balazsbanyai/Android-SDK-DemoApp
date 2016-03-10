@@ -1,12 +1,12 @@
 package com.logmein.rescuesdkdemo;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,41 +41,40 @@ import java.util.List;
  */
 public class RescueSdkDemoActivity extends AppCompatActivity {
 
-    private Button connectChannelButton;
-    private Button connectPinButton;
+    private Button connectButton;
     private Button disconnectButton;
 
     /**
      * OnClickListener implementation which initiates Session connection to the given channel.
      */
-    private class OnConnectChannelListener implements View.OnClickListener {
+    private class OnConnectListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
-            if (TextUtils.isEmpty(Config.CHANNEL_ID) || TextUtils.isEmpty(Config.API_KEY)) {
-                showChannelIdSetter();
-            } else {
-                startSession(SessionConfig.createWithChannelId(Config.CHANNEL_ID), Config.API_KEY);
-            }
-        }
-    }
 
-    /**
-     * OnClickListener implementation which initiates Session with a PIN code.
-     */
-    private class OnConnectPinListener implements View.OnClickListener {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+            Settings settings = new Settings(prefs);
 
-        @Override
-        public void onClick(View v) {
-            if (TextUtils.isEmpty(Config.API_KEY)) {
-                showApiKeySetter(new ApiKeySetterDialogFragment.ConfigSetListener() {
-                    @Override
-                    public void onConfigSet(String apiKey) {
-                        showPinCodeEntry(apiKey);
-                    }
-                });
-            } else {
-                showPinCodeEntry(Config.API_KEY);
+            switch (settings.getSessionConfigMode()) {
+                case PIN_MODE:
+                    final String apiKey = settings.getApiKey();
+                    DialogFragment pinEntryFragment = PinCodeEntryDialogFragment.newInstance(new PinCodeEntryDialogFragment.OnResultListener() {
+                        @Override
+                        public void onResult(String pinCode) {
+                            startSession(SessionConfig.createWithPinCode(pinCode), apiKey);
+                        }
+                    });
+                    pinEntryFragment.show(getSupportFragmentManager(), PinCodeEntryDialogFragment.TAG);
+
+                    break;
+
+                case CHANNEL_ID_MODE:
+                    startSession(SessionConfig.createWithChannelId(settings.getChannelId()), settings.getApiKey());
+                    break;
+
+                case CHANNEL_NAME_COMPANY_ID_MODE:
+                    startSession(SessionConfig.createWithChannelNameAndCompanyId(settings.getChannelName(), settings.getCompanyId()), settings.getApiKey());
+                    break;
             }
         }
     }
@@ -102,11 +101,8 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rescue_sdk_demo);
 
-        connectChannelButton = (Button) findViewById(R.id.buttonConnectChannel);
-        connectChannelButton.setOnClickListener(new OnConnectChannelListener());
-
-        connectPinButton = (Button) findViewById(R.id.buttonConnectPin);
-        connectPinButton.setOnClickListener(new OnConnectPinListener());
+        connectButton = (Button) findViewById(R.id.connectButton);
+        connectButton.setOnClickListener(new OnConnectListener());
 
         disconnectButton = (Button) findViewById(R.id.buttonDisconnect);
         disconnectButton.setOnClickListener(new OnDisconnectListener());
@@ -121,7 +117,7 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        menu.add("Settings")
+        menu.add(R.string.settings_menu_label)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -135,51 +131,6 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
         return true;
     }
 
-
-    /**
-     * Shows the channel id setter dialog.
-     */
-    private void showChannelIdSetter() {
-
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        DialogFragment dialogFragment = ConfigSetterDialogFragment.newInstance(new ConfigSetterDialogFragment.ConfigSetListener() {
-            @Override
-            public void onConfigSet(String channelId, String apiKey) {
-                sharedPreferences.edit()
-                        .putString(Config.PREFERENCE_CHANNEL_ID, channelId)
-                        .putString(Config.PREFERENCE_API_KEY, apiKey)
-                        .commit();
-
-                SessionConfig sessionConfig = SessionConfig.createWithChannelId(channelId);
-                startSession(sessionConfig, apiKey);
-            }
-        }, sharedPreferences.getString(Config.PREFERENCE_CHANNEL_ID, null), sharedPreferences.getString(Config.PREFERENCE_API_KEY, null));
-
-        DialogFragmentUtils.showFragmentAndDismissPrevious(getSupportFragmentManager(), dialogFragment, ConfigSetterDialogFragment.TAG);
-    }
-
-    /**
-     * Shows the API key setter dialog.
-     */
-    private void showApiKeySetter(final ApiKeySetterDialogFragment.ConfigSetListener resultListener) {
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String previousApiKey = sharedPreferences.getString(Config.PREFERENCE_API_KEY, null);
-
-        DialogFragment dialogFragment = ApiKeySetterDialogFragment.newInstance(new ApiKeySetterDialogFragment.ConfigSetListener() {
-            @Override
-            public void onConfigSet(String apiKey) {
-                sharedPreferences.edit()
-                        .putString(Config.PREFERENCE_API_KEY, apiKey)
-                        .commit();
-
-                resultListener.onConfigSet(apiKey);
-            }
-        }, previousApiKey);
-
-        DialogFragmentUtils.showFragmentAndDismissPrevious(getSupportFragmentManager(), dialogFragment, ConfigSetterDialogFragment.TAG);
-
-    }
-
     private void showPinCodeEntry(final String apiKey) {
 
         DialogFragment dialogFragment = PinCodeEntryDialogFragment.newInstance(new PinCodeEntryDialogFragment.OnResultListener() {
@@ -190,8 +141,6 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
         });
 
         DialogFragmentUtils.showFragmentAndDismissPrevious(getSupportFragmentManager(), dialogFragment, ConfigSetterDialogFragment.TAG);
-
-
     }
 
     /**
@@ -199,11 +148,8 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
      *
      */
     private void startSession(final SessionConfig sessionConfig, final String apiKey) {
-//        connectChannelButton.setEnabled(false);
-//        connectPinButton.setEnabled(false);
 
-        View connectionContainer = findViewById(R.id.connectionContainer);
-        connectionContainer.setEnabled(true);
+        connectButton.setEnabled(false);
 
         cleanup();
 
@@ -224,9 +170,9 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
                 TextView textConnectionStatus = (TextView) findViewById(R.id.textConnectionStatus);
                 eventHandlers.add(new ConnectionStatusPresenter(textConnectionStatus));
 
-                View connectionContainer = findViewById(R.id.connectionContainer);
+                Button connectButton = (Button) findViewById(R.id.connectButton);
                 View sessionStatusContainer = findViewById(R.id.sessionStatusContainer);
-                eventHandlers.add(new ConnectionButtonsPresenter(connectionContainer, sessionStatusContainer));
+                eventHandlers.add(new ConnectionButtonsPresenter(connectButton, sessionStatusContainer));
 
                 EditText chatMessage = (EditText) findViewById(R.id.editChatMessage);
                 eventHandlers.add(new ChatMessagePresenter(chatMessage));

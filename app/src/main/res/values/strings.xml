@@ -38,4 +38,5 @@
     <string name="channel_name_company_id_mode_label">Start with channel name and company ID</string>
     <string name="channel_name_label">Channel Name</string>
     <string name="company_id_label">Company ID</string>
+    <string name="settings_menu_label">Settings</string>
 </resources>

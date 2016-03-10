@@ -1,12 +1,10 @@
 package com.logmein.rescuesdkdemo.eventhandler;
 
 import android.view.View;
-import android.widget.Button;
 
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.session.event.ConnectingEvent;
 import com.logmein.rescuesdk.api.session.event.DisconnectedEvent;
-import com.logmein.rescuesdkdemo.R;
 
 /**
  * Manipulates the connection button based on the related events.
@@ -14,25 +12,25 @@ import com.logmein.rescuesdkdemo.R;
 public class ConnectionButtonsPresenter {
 
 
-    private final View connectionContainer;
+    private final View connectButton;
     private final View sessionStatusContainer;
 
-    public ConnectionButtonsPresenter(View connectionContainer, View sessionStatusContainer) {
-        this.connectionContainer = connectionContainer;
+    public ConnectionButtonsPresenter(View connectButton, View sessionStatusContainer) {
+        this.connectButton = connectButton;
         this.sessionStatusContainer = sessionStatusContainer;
     }
 
     @Subscribe
     public void onConnectingEvent(ConnectingEvent event) {
-        connectionContainer.setVisibility(View.GONE);
+        connectButton.setVisibility(View.GONE);
         sessionStatusContainer.setVisibility(View.VISIBLE);
     }
 
     @Subscribe
     public void onDisconnectedEvent(DisconnectedEvent event) {
-        connectionContainer.setVisibility(View.VISIBLE);
+        connectButton.setVisibility(View.VISIBLE);
         sessionStatusContainer.setVisibility(View.GONE);
-        connectionContainer.setEnabled(true);
+        connectButton.setEnabled(true);
     }
 
 }

@@ -7,28 +7,13 @@ import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
 
 import java.util.ArrayList;
 
 
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
-
-
-    public static final String PIN_MODE = "pinMode";
-    public static final String CHANNEL_ID_MODE = "channelIdMode";
-    public static final String CHANNEL_NAME_COMPANY_ID_MODE = "channelNameCompanyIdMode";
-
-    public static final String API_KEY = "apiKey";
-    public static final String CHANNEL_ID = "channelId";
-    public static final String CHANNEL_NAME = "channelName";
-    public static final String COMPANY_ID = "companyId";
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -51,18 +36,18 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         addPreferencesFromResource(R.xml.settings);
 
         sessionModeCheckBoxes = new ArrayList();
-        sessionModeCheckBoxes.add((CheckBoxPreference) getPreferenceManager().findPreference(PIN_MODE));
-        sessionModeCheckBoxes.add((CheckBoxPreference) getPreferenceManager().findPreference(CHANNEL_ID_MODE));
-        sessionModeCheckBoxes.add((CheckBoxPreference) getPreferenceManager().findPreference(CHANNEL_NAME_COMPANY_ID_MODE));
+        sessionModeCheckBoxes.add((CheckBoxPreference) getPreferenceManager().findPreference(Settings.PIN_MODE_KEY));
+        sessionModeCheckBoxes.add((CheckBoxPreference) getPreferenceManager().findPreference(Settings.CHANNEL_ID_MODE_KEY));
+        sessionModeCheckBoxes.add((CheckBoxPreference) getPreferenceManager().findPreference(Settings.CHANNEL_NAME_COMPANY_ID_MODE_KEY));
 
         for (CheckBoxPreference checkBox : sessionModeCheckBoxes) {
             checkBox.setOnPreferenceClickListener(this);
         }
 
-        apiKeyPref = (EditTextPreference) getPreferenceManager().findPreference(API_KEY);
-        channelIdPref = (EditTextPreference) getPreferenceManager().findPreference(CHANNEL_ID);
-        channelNamePref = (EditTextPreference) getPreferenceManager().findPreference(CHANNEL_NAME);
-        companyIdPref = (EditTextPreference) getPreferenceManager().findPreference(COMPANY_ID);
+        apiKeyPref = (EditTextPreference) getPreferenceManager().findPreference(Settings.API_KEY_KEY);
+        channelIdPref = (EditTextPreference) getPreferenceManager().findPreference(Settings.CHANNEL_ID_KEY);
+        channelNamePref = (EditTextPreference) getPreferenceManager().findPreference(Settings.CHANNEL_NAME_KEY);
+        companyIdPref = (EditTextPreference) getPreferenceManager().findPreference(Settings.COMPANY_ID_KEY);
 
         apiKeyPref.getEditText().setSingleLine();
         apiKeyPref.getEditText().setLines(1);
