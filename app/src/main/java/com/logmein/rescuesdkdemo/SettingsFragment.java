@@ -8,6 +8,7 @@ import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,6 +63,14 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         channelIdPref = (EditTextPreference) getPreferenceManager().findPreference(CHANNEL_ID);
         channelNamePref = (EditTextPreference) getPreferenceManager().findPreference(CHANNEL_NAME);
         companyIdPref = (EditTextPreference) getPreferenceManager().findPreference(COMPANY_ID);
+
+        apiKeyPref.getEditText().setSingleLine();
+        apiKeyPref.getEditText().setLines(1);
+        channelNamePref.getEditText().setSingleLine();
+        channelNamePref.getEditText().setLines(1);
+
+        channelIdPref.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
+        companyIdPref.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
 
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 
