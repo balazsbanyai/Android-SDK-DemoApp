@@ -1,6 +1,5 @@
 package com.logmein.rescuesdkdemo;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,10 +18,6 @@ import com.logmein.rescuesdk.api.session.Session;
 import com.logmein.rescuesdk.api.session.SessionFactory;
 import com.logmein.rescuesdk.api.session.config.SessionConfig;
 import com.logmein.rescuesdkdemo.adapter.ChatLogAdapter;
-import com.logmein.rescuesdkdemo.config.Config;
-import com.logmein.rescuesdkdemo.dialog.ApiKeySetterDialogFragment;
-import com.logmein.rescuesdkdemo.dialog.ConfigSetterDialogFragment;
-import com.logmein.rescuesdkdemo.dialog.DialogFragmentUtils;
 import com.logmein.rescuesdkdemo.dialog.PinCodeEntryDialogFragment;
 import com.logmein.rescuesdkdemo.eventhandler.ChatMessagePresenter;
 import com.logmein.rescuesdkdemo.eventhandler.ChatSendPresenter;
@@ -131,20 +126,8 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
         return true;
     }
 
-    private void showPinCodeEntry(final String apiKey) {
-
-        DialogFragment dialogFragment = PinCodeEntryDialogFragment.newInstance(new PinCodeEntryDialogFragment.OnResultListener() {
-            @Override
-            public void onResult(String pinCode) {
-                startSession(SessionConfig.createWithPinCode(pinCode), apiKey);
-            }
-        });
-
-        DialogFragmentUtils.showFragmentAndDismissPrevious(getSupportFragmentManager(), dialogFragment, ConfigSetterDialogFragment.TAG);
-    }
-
     /**
-     * (Re)starts the session and connects to the given channel.
+     * (Re)starts the session and connects using the given configuration.
      *
      */
     private void startSession(final SessionConfig sessionConfig, final String apiKey) {
@@ -220,7 +203,7 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        // Currently we shut down the session when the app is destroyed. This behavior should change in the future.
+        // Shut down the session when the demo app is destroyed.
         cleanup();
     }
 }

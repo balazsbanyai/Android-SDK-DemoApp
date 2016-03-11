@@ -1,8 +1,7 @@
 package com.logmein.rescuesdkdemo;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
+import android.support.v7.app.AppCompatActivity;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -13,10 +12,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_settings);
 
-        getSupportActionBar().setHomeAsUpIndicator(android.R.drawable.ic_delete);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     @Override

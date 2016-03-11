@@ -26,8 +26,6 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     EditTextPreference channelNamePref;
     EditTextPreference companyIdPref;
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,17 +75,31 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
                 cbp.setChecked(false);
             }
         }
+
+        if (preference instanceof CheckBoxPreference) {
+            boolean anyMethodSelected = false;
+            for (CheckBoxPreference cbp : sessionModeCheckBoxes) {
+                if (cbp.isChecked()) {
+                    anyMethodSelected = true;
+                    break;
+                }
+            }
+
+            if (!anyMethodSelected) {
+                CheckBoxPreference checkBoxPreference = (CheckBoxPreference) preference;
+                checkBoxPreference.setChecked(true);
+            }
+        }
+
         return true;
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-
         updateSummaries();
     }
 
     private void updateSummaries() {
-
         updateSummary(apiKeyPref);
         updateSummary(channelIdPref);
         updateSummary(channelNamePref);

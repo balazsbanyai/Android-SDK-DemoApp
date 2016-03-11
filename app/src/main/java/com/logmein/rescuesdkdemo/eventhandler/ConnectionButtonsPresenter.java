@@ -11,7 +11,6 @@ import com.logmein.rescuesdk.api.session.event.DisconnectedEvent;
  */
 public class ConnectionButtonsPresenter {
 
-
     private final View connectButton;
     private final View sessionStatusContainer;
 

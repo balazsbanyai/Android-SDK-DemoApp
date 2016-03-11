@@ -22,7 +22,7 @@ public class PinCodeEntryDialogFragment extends DialogFragment {
     public static final String TAG = "PinCodeEntryDialog";
 
     public interface OnResultListener {
-        public void onResult(String pinCode);
+        void onResult(String pinCode);
     }
 
     /**
