@@ -35,9 +35,10 @@ public class ErrorEventHandler {
 
         final FragmentManager fragmentManager = this.fragmentManager.get();
         if (fragmentManager != null) {
-            final String message = stringResolver.resolve(event);
+            String message = stringResolver.resolve(event);
+            String title = event.getClass().getSimpleName().replace("Event", "");
             if (!TextUtils.isEmpty(message)) {
-                showFragmentAndDismissPrevious(fragmentManager, ConnectionErrorDialogFragment.newInstance(message), ConnectionErrorDialogFragment.TAG);
+                showFragmentAndDismissPrevious(fragmentManager, ConnectionErrorDialogFragment.newInstance(title, message), ConnectionErrorDialogFragment.TAG);
             }
         }
     }

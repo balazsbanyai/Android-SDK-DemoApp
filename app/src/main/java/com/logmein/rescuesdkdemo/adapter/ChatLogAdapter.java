@@ -16,7 +16,6 @@ import com.logmein.rescuesdk.api.chat.event.UrlMessageEvent;
 import com.logmein.rescuesdk.api.event.Event;
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.remoteview.event.RemoteViewEvent;
-import com.logmein.rescuesdk.api.session.event.ConnectionErrorEvent;
 import com.logmein.rescuesdk.api.session.event.ConnectionEvent;
 import com.logmein.rescuesdkdemo.R;
 import com.logmein.rescuesdkresources.StringResolver;
@@ -100,12 +99,6 @@ public class ChatLogAdapter extends BaseAdapter {
     @Subscribe
     public void onConnectionEvent(ConnectionEvent event) {
         addSystemMessage(event);
-    }
-
-    @Subscribe
-    public void onErrorEvent(ConnectionErrorEvent event) {
-        ChatMessageHolder message = new ChatMessageHolder(event.getClass().getSimpleName(), System.currentTimeMillis());
-        addChatMessage(message);
     }
 
     @Subscribe

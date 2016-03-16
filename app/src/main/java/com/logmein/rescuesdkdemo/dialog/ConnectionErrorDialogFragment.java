@@ -6,8 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
-import com.logmein.rescuesdkdemo.R;
-
 /**
  * DialogFragment to present error message to the user.
  */
@@ -20,29 +18,35 @@ public class ConnectionErrorDialogFragment extends DialogFragment {
      * @param message The string message to be displayed.
      * @return ConnectionErrorDialogFragment instance.
      */
-    public static ConnectionErrorDialogFragment newInstance(final String message) {
+    public static ConnectionErrorDialogFragment newInstance(final String title, final String message) {
         final ConnectionErrorDialogFragment fragment = new ConnectionErrorDialogFragment();
         fragment.setCancelable(false);
-        fragment.setErrorMessage(message);
+        fragment.title = title;
+        fragment.message = message;
         return fragment;
     }
 
-    private String errorToPresent;
+    private String message;
+    private String title;
 
     /**
      * Sets the message to be displayed in the dialog.
      * @param message The message to be displayed.
      */
-    private void setErrorMessage(final String message) {
-        errorToPresent = message;
+    private void setMessage(final String message) {
+        this.message = message;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.error_title)
-                .setMessage(errorToPresent)
+        builder.setTitle(title)
+                .setMessage(message)
                 .setNeutralButton(android.R.string.ok, null);
         return builder.create();
     }
