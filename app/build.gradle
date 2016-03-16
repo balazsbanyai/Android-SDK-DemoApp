@@ -21,7 +21,7 @@ android {
     }
     defaultConfig {
         applicationId "com.logmein.rescuesdkdemo"
-        minSdkVersion 10
+        minSdkVersion 11
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -44,12 +44,12 @@ dependencies {
     compile 'org.slf4j:slf4j-android:1.7.12'
 
     // Basic SDK dependency
-    compile('com.logmein.rescuesdk:core:1.0.1@aar') {
+    compile('com.logmein.rescuesdk:core:1.1.0-SNAPSHOT@aar') {
         transitive = true
     }
 
     // SDK Resource dependency (optional)
-    compile('com.logmein.rescuesdk:resources:1.0.1@aar') {
+    compile('com.logmein.rescuesdk:resources:1.1.0-SNAPSHOT@aar') {
         transitive = false
     }
 }

@@ -1,0 +1,43 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:key="apiKey"
+        android:title="@string/api_key_label" />
+
+    <PreferenceCategory
+        android:title="Session connection method">
+
+        <CheckBoxPreference
+            android:key="pinMode"
+            android:title="@string/pin_mode_label"
+            android:defaultValue="true"/>
+
+        <CheckBoxPreference
+            android:key="channelIdMode"
+            android:title="@string/channelid_mode_label"
+            android:defaultValue="false"/>
+
+        <EditTextPreference
+            android:key="channelId"
+            android:title="@string/channelid_label"
+            android:dependency="channelIdMode" />
+
+        <CheckBoxPreference
+            android:key="channelNameCompanyIdMode"
+            android:title="@string/channel_name_company_id_mode_label"
+            android:defaultValue="false"/>
+
+        <EditTextPreference
+            android:key="channelName"
+            android:title="@string/channel_name_label"
+            android:dependency="channelNameCompanyIdMode" />
+
+        <EditTextPreference
+            android:key="companyId"
+            android:title="@string/company_id_label"
+            android:dependency="channelNameCompanyIdMode" />
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>
