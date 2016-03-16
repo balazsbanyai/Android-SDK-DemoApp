@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:inputType="number"
         android:hint="@string/hint_channelId"
-        android:text="1725099686"/>
+        />
 
     <TextView
         android:layout_width="match_parent"
