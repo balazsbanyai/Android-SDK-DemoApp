@@ -31,7 +31,7 @@ import java.util.Locale;
  */
 public class ChatLogAdapter extends BaseAdapter {
 
-    private static final String LOG_OWN_CHAT_MESSAGE = "%s: %s";
+
     private static final String TIMESTAMP_FORMAT = "[%s]";
     private final static SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.US);
 
@@ -82,11 +82,6 @@ public class ChatLogAdapter extends BaseAdapter {
         this.stringResolver = stringResolver;
     }
 
-    public void clear() {
-        messages.clear();
-        notifyDataSetChanged();
-    }
-
     @Subscribe
     public void onRemoteChatMessageEvent(RemoteChatMessageEvent event) {
         String resolvedMessage = stringResolver.resolve(event);
@@ -120,8 +115,9 @@ public class ChatLogAdapter extends BaseAdapter {
         final String resolvedMessage = stringResolver.resolve(event);
         final long time = System.currentTimeMillis();
 
+        ChatMessageHolder message;
         if (resolvedMessage != null) {
-            ChatMessageHolder message = new ChatMessageHolder(resolvedMessage, time);
+            message = new ChatMessageHolder(resolvedMessage, time);
             addChatMessage(message);
         }
     }

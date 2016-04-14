@@ -8,31 +8,40 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".RescueSdkDemoActivity">
 
-    <LinearLayout
-        android:id="@+id/connectionContainer"
+    <Button
+        android:id="@+id/connectButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:text="@string/connect"
+        android:layout_alignParentTop="true" />
+
+    <LinearLayout
+        android:id="@+id/sessionStatusContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/connectButton"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/textConnectionStatus"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
             android:text="@string/disconnected" />
-
         <Button
             android:id="@+id/buttonStopRc"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="@string/stop_rc"
             android:visibility="invisible" />
-
         <Button
-            android:id="@+id/buttonConnection"
+            android:id="@+id/buttonDisconnect"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/connect" />
+            android:layout_height="match_parent"
+            android:text="@string/disconnect" />
+
     </LinearLayout>
 
     <ListView
@@ -40,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/chatControlContainer"
-        android:layout_below="@+id/connectionContainer"
+        android:layout_below="@+id/sessionStatusContainer"
         android:stackFromBottom="true"
         android:transcriptMode="alwaysScroll" />
 
