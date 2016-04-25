@@ -151,7 +151,7 @@ public class RescueSdkDemoActivity extends AppCompatActivity {
                 eventHandlers.add(logAdapter);
 
                 TextView textConnectionStatus = (TextView) findViewById(R.id.textConnectionStatus);
-                eventHandlers.add(new ConnectionStatusPresenter(textConnectionStatus));
+                eventHandlers.add(new ConnectionStatusPresenter(textConnectionStatus, resolver));
 
                 Button connectButton = (Button) findViewById(R.id.connectButton);
                 View sessionStatusContainer = findViewById(R.id.sessionStatusContainer);
