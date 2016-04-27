@@ -2,8 +2,6 @@
     <string name="app_name">RescueSdkDemo</string>
     <string name="hint_type_here">Type here</string>
     <string name="btn_send">Send</string>
-    <string name="connected">Connected</string>
-    <string name="disconnected">Disconnected</string>
     <string name="connect">Connect</string>
     <string name="connect_pin">Connect with PIN code</string>
     <string name="disconnect">Disconnect</string>

@@ -6,27 +6,29 @@ import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.session.event.ConnectedEvent;
 import com.logmein.rescuesdk.api.session.event.DisconnectedEvent;
 import com.logmein.rescuesdkdemo.R;
+import com.logmein.rescuesdkresources.StringResolver;
 
 /**
  * Manipulates the connection status view based on the related events
  */
 public class ConnectionStatusPresenter {
 
-    TextView connectionStatus;
+    private TextView connectionStatus;
+    private final StringResolver resolver;
 
-    public ConnectionStatusPresenter(TextView connectionStatus) {
-        this.connectionStatus = connectionStatus;
-        connectionStatus.setText(R.string.disconnected);
+    public ConnectionStatusPresenter(TextView textConnectionStatus, StringResolver resolver) {
+        this.connectionStatus = textConnectionStatus;
+        this.resolver = resolver;
     }
 
     @Subscribe
     public void onConnectedEvent(ConnectedEvent event) {
-        connectionStatus.setText(R.string.connected);
+        connectionStatus.setText(resolver.resolve(event));
     }
 
     @Subscribe
     public void onDisconnectedEvent(DisconnectedEvent event) {
-        connectionStatus.setText(R.string.disconnected);
+        connectionStatus.setText(resolver.resolve(event));
     }
 
 
