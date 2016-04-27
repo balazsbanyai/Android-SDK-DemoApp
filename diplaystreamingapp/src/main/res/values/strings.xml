@@ -4,5 +4,6 @@
     <string name="technician_typing">Technician is typing…</string>
     <string name="chat_prefix">You say</string>
     <string name="stop_rc">Stop RC</string>
+    <string name="app_name">Display streaming demo</string>
 
 </resources>

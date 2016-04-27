@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">RescueSdkDemo</string>
     <string name="connect">Connect</string>
     <string name="connect_pin">Connect with PIN code</string>
     <string name="disconnect">Disconnect</string>
