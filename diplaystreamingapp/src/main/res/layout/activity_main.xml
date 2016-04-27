@@ -1,0 +1,90 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.logmein.rescuesdkdemo.displaystreamingapp.MainActivity">
+
+    <Button
+        android:id="@+id/connectButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/connect"
+        android:layout_alignParentTop="true" />
+
+    <LinearLayout
+        android:id="@+id/sessionStatusContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/connectButton"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/textConnectionStatus"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical" />
+        <Button
+            android:id="@+id/buttonStopRc"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/stop_rc"
+            android:visibility="invisible" />
+        <Button
+            android:id="@+id/buttonDisconnect"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/disconnect" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listLogs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/chatControlContainer"
+        android:layout_below="@+id/sessionStatusContainer"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll" />
+
+    <RelativeLayout
+        android:id="@+id/chatControlContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <TextView
+            android:id="@+id/textTypingNotification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            tools:text="Typing..." />
+
+        <EditText
+            android:id="@+id/editChatMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textTypingNotification"
+            android:layout_toLeftOf="@+id/buttonChatSend"
+            android:enabled="false"
+            android:hint="@string/hint_type_here"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/buttonChatSend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/textTypingNotification"
+            android:enabled="false"
+            android:text="@string/btn_send" />
+    </RelativeLayout>
+
+</RelativeLayout>
