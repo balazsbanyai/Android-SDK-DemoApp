@@ -47,5 +47,8 @@ dependencies {
     compile('com.logmein.rescuesdk:resources:latest.integration@aar') {
         transitive = false
     }
+
+    compile('com.logmein.rescuesdk:displaystreaming:latest.integration@aar')
+
     compile project(':core')
 }
