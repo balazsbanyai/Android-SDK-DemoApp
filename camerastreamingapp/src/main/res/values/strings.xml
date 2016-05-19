@@ -3,4 +3,6 @@
     <string name="stop_rc">Stop streaming</string>
     <string name="app_name">Camera streaming demo</string>
 
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
 </resources>
