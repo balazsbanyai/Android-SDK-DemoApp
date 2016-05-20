@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.logmein.rescuesdk.api.ext.CameraStreamView;
+import com.logmein.rescuesdk.api.ext.RemoteCameraViewExtension;
 import com.logmein.rescuesdk.api.session.Session;
 import com.logmein.rescuesdk.api.session.SessionFactory;
 import com.logmein.rescuesdk.api.session.config.SessionConfig;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button connectButton;
     private Button disconnectButton;
+    private CameraStreamView cameraStreamView;
 
     /**
      * OnClickListener implementation which initiates Session connection to the given channel.
@@ -98,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         disconnectButton = (Button) findViewById(R.id.buttonDisconnect);
         disconnectButton.setOnClickListener(new OnDisconnectListener());
 
+        cameraStreamView = (CameraStreamView) findViewById(R.id.camera_stream_view);
     }
 
     @Override
@@ -120,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * (Re)starts the session and connects using the given configuration.
-     *
      */
     private void startSession(final SessionConfig sessionConfig, final String apiKey) {
 
@@ -158,6 +161,8 @@ public class MainActivity extends AppCompatActivity {
                 for (final Object eventHandler : eventHandlers) {
                     rescueSession.getEventBus().add(eventHandler);
                 }
+
+                rescueSession.getExtension(RemoteCameraViewExtension.class).startRendering(cameraStreamView);
 
                 // After everything is set up, we connect the session with the given configuration.
                 rescueSession.connect(sessionConfig);
