@@ -5,10 +5,10 @@ import android.widget.Button;
 
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.remoteview.RemoteViewClient;
+import com.logmein.rescuesdk.api.remoteview.event.RemoteCameraViewPausedEvent;
+import com.logmein.rescuesdk.api.remoteview.event.RemoteCameraViewResumedEvent;
 import com.logmein.rescuesdk.api.remoteview.event.RemoteViewStartedEvent;
 import com.logmein.rescuesdk.api.remoteview.event.RemoteViewStoppedEvent;
-import com.logmein.rescuesdk.internal.remoteview.event.RemoteViewPausedEvent;
-import com.logmein.rescuesdk.internal.remoteview.event.RemoteViewResumedEvent;
 import com.logmein.rescuesdkdemo.camerastreamingapp.R;
 
 public class PauseStreamingPresenter {
@@ -43,19 +43,19 @@ public class PauseStreamingPresenter {
 
     @Subscribe
     public void onRemoteViewStoppedEvent(final RemoteViewStoppedEvent event) {
-        pauseStream.setVisibility(View.INVISIBLE);
+        pauseStream.setVisibility(View.GONE);
         pauseStream.setOnClickListener(null);
         remoteViewClient = null;
     }
 
     @Subscribe
-    public void onRemoteViewPausedEvent(RemoteViewPausedEvent event) {
+    public void onRemoteViewPausedEvent(RemoteCameraViewPausedEvent event) {
         pauseStream.setOnClickListener(resumer);
         pauseStream.setText(R.string.resume);
     }
 
     @Subscribe
-    public void onRemoteViewResumedEvent(RemoteViewResumedEvent event) {
+    public void onRemoteViewResumedEvent(RemoteCameraViewResumedEvent event) {
         pauseStream.setOnClickListener(pauser);
         pauseStream.setText(R.string.pause);
     }

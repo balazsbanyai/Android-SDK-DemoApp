@@ -33,7 +33,7 @@ public class StopStreamingPresenter {
 
     @Subscribe
     public void onRemoteViewStoppedEvent(final RemoteViewStoppedEvent event) {
-        stopStreaming.setVisibility(View.INVISIBLE);
+        stopStreaming.setVisibility(View.GONE);
         stopStreaming.setOnClickListener(null);
         remoteViewClient = null;
     }
