@@ -4,7 +4,9 @@ import android.widget.TextView;
 
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.session.event.ConnectedEvent;
+import com.logmein.rescuesdk.api.session.event.ConnectingEvent;
 import com.logmein.rescuesdk.api.session.event.DisconnectedEvent;
+import com.logmein.rescuesdk.api.session.event.DisconnectingEvent;
 import com.logmein.rescuesdkresources.StringResolver;
 
 /**
@@ -18,6 +20,16 @@ public class ConnectionStatusPresenter {
     public ConnectionStatusPresenter(TextView textConnectionStatus, StringResolver resolver) {
         this.connectionStatus = textConnectionStatus;
         this.resolver = resolver;
+    }
+
+    @Subscribe
+    public void onConnectingEvent(ConnectingEvent event) {
+        connectionStatus.setText(resolver.resolve(event));
+    }
+
+    @Subscribe
+    public void onDisconnectingEvent(DisconnectingEvent event) {
+        connectionStatus.setText(resolver.resolve(event));
     }
 
     @Subscribe

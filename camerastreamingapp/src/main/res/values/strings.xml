@@ -1,8 +1,8 @@
 <resources>
 
-    <string name="stop_rc">Stop streaming</string>
+    <string name="stop_rc">Stop stream</string>
     <string name="app_name">Camera streaming demo</string>
 
-    <string name="pause">Pause</string>
-    <string name="resume">Resume</string>
+    <string name="pause">Pause stream</string>
+    <string name="resume">Resume stream</string>
 </resources>
