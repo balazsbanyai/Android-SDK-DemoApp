@@ -56,9 +56,7 @@ dependencies {
         transitive = false
     }
     // SDK Resource dependency (optional)
-    compile('com.logmein.rescuesdk:resources:latest.integration@aar') {
-        transitive = false
-    }
+    compile('com.logmein.rescuesdk:resources:latest.integration@aar')
     compile project(':core')
 
     //TODO: remove mediaclientlib dependency before release
