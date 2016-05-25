@@ -12,16 +12,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.logmein.rescuesdk.api.ext.CameraStreamView;
+import com.logmein.rescuesdk.api.ext.RemoteCameraViewExtension;
 import com.logmein.rescuesdk.api.session.Session;
 import com.logmein.rescuesdk.api.session.SessionFactory;
 import com.logmein.rescuesdk.api.session.config.SessionConfig;
+import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.PauseStreamingPresenter;
+import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.StopStreamingPresenter;
 import com.logmein.rescuesdkdemo.core.Settings;
 import com.logmein.rescuesdkdemo.core.SettingsActivity;
 import com.logmein.rescuesdkdemo.core.dialog.PinCodeEntryDialogFragment;
 import com.logmein.rescuesdkdemo.core.eventhandler.ConnectionButtonsPresenter;
 import com.logmein.rescuesdkdemo.core.eventhandler.ConnectionStatusPresenter;
 import com.logmein.rescuesdkdemo.core.eventhandler.ErrorEventHandler;
-import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.StopStreamingPresenter;
 import com.logmein.rescuesdkresources.StringResolver;
 
 import java.util.ArrayList;
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button connectButton;
     private Button disconnectButton;
+    private CameraStreamView cameraStreamView;
 
     /**
      * OnClickListener implementation which initiates Session connection to the given channel.
@@ -97,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         disconnectButton = (Button) findViewById(R.id.buttonDisconnect);
         disconnectButton.setOnClickListener(new OnDisconnectListener());
 
+        cameraStreamView = (CameraStreamView) findViewById(R.id.camera_stream_view);
     }
 
     @Override
@@ -119,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * (Re)starts the session and connects using the given configuration.
-     *
      */
     private void startSession(final SessionConfig sessionConfig, final String apiKey) {
 
@@ -148,13 +152,17 @@ public class MainActivity extends AppCompatActivity {
                 eventHandlers.add(new ConnectionButtonsPresenter(connectButton, sessionStatusContainer));
 
                 Button stopStreamingButton = (Button) findViewById(R.id.buttonStopStreaming);
+                Button pauseStreamingButton = (Button) findViewById(R.id.buttonPauseStreaming);
                 eventHandlers.add(new StopStreamingPresenter(stopStreamingButton));
+                eventHandlers.add(new PauseStreamingPresenter(pauseStreamingButton));
 
                 eventHandlers.add(new ErrorEventHandler(getSupportFragmentManager(), resolver));
                 eventHandlers.add(MainActivity.this);
                 for (final Object eventHandler : eventHandlers) {
                     rescueSession.getEventBus().add(eventHandler);
                 }
+
+                rescueSession.getExtension(RemoteCameraViewExtension.class).startRendering(cameraStreamView);
 
                 // After everything is set up, we connect the session with the given configuration.
                 rescueSession.connect(sessionConfig);
