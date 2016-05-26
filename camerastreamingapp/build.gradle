@@ -5,6 +5,11 @@ repositories {
 
     mavenLocal()
 
+    //TODO: remove artifactory url before release
+    maven {
+        url 'https://artifactory.intra.3amlabs.net/artifactory/repo'
+    }
+
     maven {
         url 'https://raw.githubusercontent.com/logmeinrescue/android-sdk/master/maven/repository'
     }
@@ -21,7 +26,7 @@ android {
     }
     defaultConfig {
         applicationId "com.logmein.rescuesdkdemo.camerastreamingapp"
-        minSdkVersion 11
+        minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
         versionName "1.1"
@@ -43,9 +48,17 @@ dependencies {
     compile('com.logmein.rescuesdk:core:latest.integration@aar') {
         transitive = true
     }
-    // SDK Resource dependency (optional)
-    compile('com.logmein.rescuesdk:resources:latest.integration@aar') {
+    compile('com.logmein.rescuesdk:camerastreaming:latest.integration@aar') {
         transitive = false
     }
+    //TODO: remove streamingcore dependency before release
+    compile('com.logmein.rescuesdk:streamingcore:latest.integration@aar') {
+        transitive = false
+    }
+    // SDK Resource dependency (optional)
+    compile('com.logmein.rescuesdk:resources:latest.integration@aar')
     compile project(':core')
+
+    //TODO: remove mediaclientlib dependency before release
+    compile 'com.logmein.media:mediaclientlibjava-release:4.5.1.916'
 }

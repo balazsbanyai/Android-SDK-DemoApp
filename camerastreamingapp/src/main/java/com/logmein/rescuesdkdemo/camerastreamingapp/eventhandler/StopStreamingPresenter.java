@@ -12,18 +12,18 @@ import com.logmein.rescuesdk.api.remoteview.event.RemoteViewStoppedEvent;
  * Manipulates the display sharing button based on the related events
  */
 public class StopStreamingPresenter {
-    private Button stopDisplaySharing;
+    private Button stopStreaming;
     private RemoteViewClient remoteViewClient;
 
-    public StopStreamingPresenter(Button stopDisplaySharing) {
-        this.stopDisplaySharing = stopDisplaySharing;
+    public StopStreamingPresenter(Button stopStreaming) {
+        this.stopStreaming = stopStreaming;
     }
 
     @Subscribe
     public void onRemoteViewStartedEvent(final RemoteViewStartedEvent event) {
-        stopDisplaySharing.setVisibility(View.VISIBLE);
+        stopStreaming.setVisibility(View.VISIBLE);
         remoteViewClient = event.getRemoteViewClient();
-        stopDisplaySharing.setOnClickListener(new View.OnClickListener() {
+        stopStreaming.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 remoteViewClient.stop();
@@ -33,9 +33,8 @@ public class StopStreamingPresenter {
 
     @Subscribe
     public void onRemoteViewStoppedEvent(final RemoteViewStoppedEvent event) {
-        stopDisplaySharing .setVisibility(View.INVISIBLE);
-        stopDisplaySharing.setOnClickListener(null);
+        stopStreaming.setVisibility(View.GONE);
+        stopStreaming.setOnClickListener(null);
         remoteViewClient = null;
     }
-
 }
