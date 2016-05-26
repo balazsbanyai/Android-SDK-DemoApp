@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if (rescueSession != null) {
+                rescueSession.getExtension(RemoteCameraViewExtension.class).stopRendering();
                 rescueSession.disconnect();
             }
         }
