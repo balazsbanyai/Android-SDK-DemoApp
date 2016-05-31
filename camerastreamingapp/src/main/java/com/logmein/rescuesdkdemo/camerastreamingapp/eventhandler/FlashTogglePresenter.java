@@ -10,6 +10,7 @@ import com.logmein.rescuesdk.api.remoteview.event.RemoteCameraViewPausedEvent;
 import com.logmein.rescuesdk.api.remoteview.event.RemoteCameraViewResumedEvent;
 import com.logmein.rescuesdk.api.remoteview.event.RemoteViewStartedEvent;
 import com.logmein.rescuesdk.api.remoteview.event.RemoteViewStoppedEvent;
+import com.logmein.rescuesdk.internal.remoteview.event.RemoteViewBackgroundEvent;
 
 /**
  * Manipulates the flashlight toggle button based on the related events.
@@ -55,6 +56,11 @@ public class FlashTogglePresenter {
 
     @Subscribe
     public void onRemoteViewStopped(RemoteViewStoppedEvent event) {
+        hideButtonAndTurnFlashOff();
+    }
+
+    @Subscribe
+    public void onRemoteViewBackground(RemoteViewBackgroundEvent event) {
         hideButtonAndTurnFlashOff();
     }
 
