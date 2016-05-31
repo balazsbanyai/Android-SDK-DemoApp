@@ -6,6 +6,8 @@ import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.ext.RemoteCameraViewExtension;
 import com.logmein.rescuesdk.api.remoteview.event.FlashlightTurnedOff;
 import com.logmein.rescuesdk.api.remoteview.event.FlashlightTurnedOn;
+import com.logmein.rescuesdk.api.remoteview.event.RemoteCameraViewPausedEvent;
+import com.logmein.rescuesdk.api.remoteview.event.RemoteCameraViewResumedEvent;
 import com.logmein.rescuesdk.api.remoteview.event.RemoteViewStartedEvent;
 import com.logmein.rescuesdk.api.remoteview.event.RemoteViewStoppedEvent;
 
@@ -37,13 +39,26 @@ public class FlashTogglePresenter {
     }
 
     @Subscribe
-    public void onStreamStarted(RemoteViewStartedEvent event) {
+    public void onRemoteViewStarted(RemoteViewStartedEvent event) {
         toggleButton.setVisibility(View.VISIBLE);
         toggleButton.setOnClickListener(flashOnListener);
     }
 
     @Subscribe
-    public void onStreamStopped(RemoteViewStoppedEvent event) {
+    public void onRemoteViewResumed(RemoteCameraViewResumedEvent event) {
+        toggleButton.setVisibility(View.VISIBLE);
+        toggleButton.setOnClickListener(flashOnListener);
+    }
+
+    @Subscribe
+    public void onRemoteViewPausedEvent(RemoteCameraViewPausedEvent event) {
+        toggleButton.setVisibility(View.GONE);
+        toggleButton.setOnClickListener(null);
+        extension.flashOff();
+    }
+
+    @Subscribe
+    public void onRemoteViewStopped(RemoteViewStoppedEvent event) {
         toggleButton.setVisibility(View.GONE);
         toggleButton.setOnClickListener(null);
     }
