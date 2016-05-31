@@ -40,27 +40,23 @@ public class FlashTogglePresenter {
 
     @Subscribe
     public void onRemoteViewStarted(RemoteViewStartedEvent event) {
-        toggleButton.setVisibility(View.VISIBLE);
-        toggleButton.setOnClickListener(flashOnListener);
+        showButton();
     }
 
     @Subscribe
     public void onRemoteViewResumed(RemoteCameraViewResumedEvent event) {
-        toggleButton.setVisibility(View.VISIBLE);
-        toggleButton.setOnClickListener(flashOnListener);
+        showButton();
     }
 
     @Subscribe
     public void onRemoteViewPausedEvent(RemoteCameraViewPausedEvent event) {
-        toggleButton.setVisibility(View.GONE);
-        toggleButton.setOnClickListener(null);
+        hideButton();
         extension.flashOff();
     }
 
     @Subscribe
     public void onRemoteViewStopped(RemoteViewStoppedEvent event) {
-        toggleButton.setVisibility(View.GONE);
-        toggleButton.setOnClickListener(null);
+        hideButton();
     }
 
     @Subscribe
@@ -71,5 +67,15 @@ public class FlashTogglePresenter {
     @Subscribe
     public void onFlashTurnedOff(FlashlightTurnedOff event) {
         toggleButton.setOnClickListener(flashOnListener);
+    }
+
+    private void showButton() {
+        toggleButton.setVisibility(View.VISIBLE);
+        toggleButton.setOnClickListener(flashOnListener);
+    }
+
+    private void hideButton() {
+        toggleButton.setVisibility(View.GONE);
+        toggleButton.setOnClickListener(null);
     }
 }
