@@ -50,13 +50,12 @@ public class FlashTogglePresenter {
 
     @Subscribe
     public void onRemoteViewPausedEvent(RemoteCameraViewPausedEvent event) {
-        hideButton();
-        extension.flashOff();
+        hideButtonAndTurnFlashOff();
     }
 
     @Subscribe
     public void onRemoteViewStopped(RemoteViewStoppedEvent event) {
-        hideButton();
+        hideButtonAndTurnFlashOff();
     }
 
     @Subscribe
@@ -76,8 +75,9 @@ public class FlashTogglePresenter {
         toggleButton.setOnClickListener(flashOnListener);
     }
 
-    private void hideButton() {
+    private void hideButtonAndTurnFlashOff() {
         toggleButton.setVisibility(View.GONE);
         toggleButton.setOnClickListener(null);
+        extension.flashOff();
     }
 }
