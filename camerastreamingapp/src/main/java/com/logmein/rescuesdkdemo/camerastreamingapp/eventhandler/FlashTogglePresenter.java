@@ -69,6 +69,8 @@ public class FlashTogglePresenter {
         toggleButton.setOnClickListener(flashOnListener);
     }
 
+    //TODO: handle Freeze/Unfreeze here
+
     private void showButton() {
         toggleButton.setVisibility(View.VISIBLE);
         toggleButton.setOnClickListener(flashOnListener);
