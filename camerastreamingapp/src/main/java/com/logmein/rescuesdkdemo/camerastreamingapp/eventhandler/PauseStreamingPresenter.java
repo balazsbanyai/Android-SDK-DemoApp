@@ -11,6 +11,9 @@ import com.logmein.rescuesdk.api.remoteview.event.RemoteViewStartedEvent;
 import com.logmein.rescuesdk.api.remoteview.event.RemoteViewStoppedEvent;
 import com.logmein.rescuesdkdemo.camerastreamingapp.R;
 
+/**
+ * Manipulates the pause/resume streaming button based on the related events.
+ */
 public class PauseStreamingPresenter {
 
     private Button pauseStream;

@@ -17,6 +17,7 @@ import com.logmein.rescuesdk.api.ext.RemoteCameraViewExtension;
 import com.logmein.rescuesdk.api.session.Session;
 import com.logmein.rescuesdk.api.session.SessionFactory;
 import com.logmein.rescuesdk.api.session.config.SessionConfig;
+import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.FlashTogglePresenter;
 import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.PauseStreamingPresenter;
 import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.StopStreamingPresenter;
 import com.logmein.rescuesdkdemo.core.Settings;
@@ -159,11 +160,16 @@ public class MainActivity extends AppCompatActivity {
 
                 eventHandlers.add(new ErrorEventHandler(getSupportFragmentManager(), resolver));
                 eventHandlers.add(MainActivity.this);
+
+                RemoteCameraViewExtension extension = rescueSession.getExtension(RemoteCameraViewExtension.class);
+                extension.startRendering(cameraStreamView);
+
+                Button flashToggleButton = (Button) findViewById(R.id.buttonFlashToggle);
+                eventHandlers.add(new FlashTogglePresenter(flashToggleButton, extension));
+
                 for (final Object eventHandler : eventHandlers) {
                     rescueSession.getEventBus().add(eventHandler);
                 }
-
-                rescueSession.getExtension(RemoteCameraViewExtension.class).startRendering(cameraStreamView);
 
                 // After everything is set up, we connect the session with the given configuration.
                 rescueSession.connect(sessionConfig);

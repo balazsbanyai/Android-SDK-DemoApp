@@ -5,4 +5,5 @@
 
     <string name="pause">Pause stream</string>
     <string name="resume">Resume stream</string>
+    <string name="toggle_flash">Toggle flash</string>
 </resources>

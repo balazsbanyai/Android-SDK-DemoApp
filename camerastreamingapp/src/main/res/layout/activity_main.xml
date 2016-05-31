@@ -65,6 +65,13 @@
                 android:visibility="gone" />
 
             <Button
+                android:id="@+id/buttonFlashToggle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/toggle_flash"
+                android:visibility="gone" />
+
+            <Button
                 android:id="@+id/buttonDisconnect"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
