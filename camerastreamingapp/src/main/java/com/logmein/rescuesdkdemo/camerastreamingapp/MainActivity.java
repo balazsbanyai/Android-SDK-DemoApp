@@ -132,7 +132,9 @@ public class MainActivity extends AppCompatActivity {
 
         cleanup();
 
-        SessionFactory.newInstance().create(getApplicationContext(), apiKey, new SessionFactory.SessionCreationCallback() {
+        SessionFactory sessionFactory = SessionFactory.newInstance();
+        sessionFactory.useExtension(RemoteCameraViewExtension.class);
+        sessionFactory.create(getApplicationContext(), apiKey, new SessionFactory.SessionCreationCallback() {
             @Override
             public void onSessionCreated(Session session) {
                 rescueSession = session;
