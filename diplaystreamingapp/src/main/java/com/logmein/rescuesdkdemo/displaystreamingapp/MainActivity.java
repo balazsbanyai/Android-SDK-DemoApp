@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Button connectButton = (Button) findViewById(R.id.connectButton);
                 View sessionStatusContainer = findViewById(R.id.sessionStatusContainer);
-                eventHandlers.add(new ConnectionButtonsPresenter(connectButton, sessionStatusContainer));
+                eventHandlers.add(new ConnectionButtonsPresenter(connectButton));
 
                 EditText chatMessage = (EditText) findViewById(R.id.editChatMessage);
                 eventHandlers.add(new ChatMessagePresenter(chatMessage));
