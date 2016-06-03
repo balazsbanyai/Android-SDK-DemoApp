@@ -4,12 +4,10 @@ import android.view.View;
 
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.ext.RemoteCameraViewExtension;
-import com.logmein.rescuesdk.api.remoteview.event.FlashlightTurnedOff;
-import com.logmein.rescuesdk.api.remoteview.event.FlashlightTurnedOn;
-import com.logmein.rescuesdk.api.remoteview.event.RemoteCameraViewPausedEvent;
-import com.logmein.rescuesdk.api.remoteview.event.RemoteCameraViewResumedEvent;
-import com.logmein.rescuesdk.api.remoteview.event.RemoteViewStartedEvent;
-import com.logmein.rescuesdk.api.remoteview.event.RemoteViewStoppedEvent;
+import com.logmein.rescuesdk.api.remoteview.camera.event.FlashlightAvailable;
+import com.logmein.rescuesdk.api.remoteview.camera.event.FlashlightTurnedOff;
+import com.logmein.rescuesdk.api.remoteview.camera.event.FlashlightTurnedOn;
+import com.logmein.rescuesdk.api.remoteview.camera.event.FlashlightUnavailable;
 
 /**
  * Manipulates the flashlight toggle button based on the related events.
@@ -39,22 +37,12 @@ public class FlashTogglePresenter {
     }
 
     @Subscribe
-    public void onRemoteViewStarted(RemoteViewStartedEvent event) {
+    public void onFlashAvailable(FlashlightAvailable event) {
         showButton();
     }
 
     @Subscribe
-    public void onRemoteViewResumed(RemoteCameraViewResumedEvent event) {
-        showButton();
-    }
-
-    @Subscribe
-    public void onRemoteViewPausedEvent(RemoteCameraViewPausedEvent event) {
-        hideButton();
-    }
-
-    @Subscribe
-    public void onRemoteViewStopped(RemoteViewStoppedEvent event) {
+    public void onFlashUnavailable(FlashlightUnavailable event) {
         hideButton();
     }
 
@@ -67,8 +55,6 @@ public class FlashTogglePresenter {
     public void onFlashTurnedOff(FlashlightTurnedOff event) {
         toggleButton.setOnClickListener(flashOnListener);
     }
-
-    //TODO: handle Freeze/Unfreeze here
 
     private void showButton() {
         toggleButton.setVisibility(View.VISIBLE);

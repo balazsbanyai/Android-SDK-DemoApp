@@ -20,15 +20,6 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context=".MainActivity">
 
-        <Button
-            android:id="@+id/connectButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:text="@string/connect" />
-
         <TextView
             android:id="@+id/textConnectionStatus"
             android:layout_width="wrap_content"
@@ -48,7 +39,16 @@
             android:layout_alignParentTop="true"
             android:animateLayoutChanges="true"
             android:orientation="vertical"
-            android:visibility="gone">
+            >
+
+            <Button
+                android:id="@+id/connectButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/connect" />
 
             <Button
                 android:id="@+id/buttonStopStreaming"
