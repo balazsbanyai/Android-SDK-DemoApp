@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.ext.CameraStreamView;
-import com.logmein.rescuesdk.api.ext.RemoteCameraViewExtension;
+import com.logmein.rescuesdk.api.ext.CameraStreamingExtension;
 import com.logmein.rescuesdk.api.session.Session;
 import com.logmein.rescuesdk.api.session.SessionFactory;
 import com.logmein.rescuesdk.api.session.config.SessionConfig;
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if (rescueSession != null) {
-                rescueSession.getExtension(RemoteCameraViewExtension.class).stopRendering();
+                rescueSession.getExtension(CameraStreamingExtension.class).stopRendering();
                 rescueSession.disconnect();
             }
         }
@@ -136,13 +136,13 @@ public class MainActivity extends AppCompatActivity {
         Settings settings = new Settings(prefs);
         final String apiKey = settings.getApiKey();
         SessionFactory factory = SessionFactory.newInstance();
-        factory.useExtension(RemoteCameraViewExtension.class);
+        factory.useExtension(CameraStreamingExtension.class);
         factory.create(getApplicationContext(), apiKey, new SessionFactory.SessionCreationCallback() {
             @Override
             public void onSessionCreated(Session session) {
                 rescueSession = session;
                 addHandlers();
-                RemoteCameraViewExtension extension = session.getExtension(RemoteCameraViewExtension.class);
+                CameraStreamingExtension extension = session.getExtension(CameraStreamingExtension.class);
                 extension.startRendering(cameraStreamView);
                 // After everything is set up, the session is ready to be connected
 
@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         eventHandlers.add(new ErrorEventHandler(getSupportFragmentManager(), resolver));
         eventHandlers.add(MainActivity.this);
 
-        RemoteCameraViewExtension extension = rescueSession.getExtension(RemoteCameraViewExtension.class);
+        CameraStreamingExtension extension = rescueSession.getExtension(CameraStreamingExtension.class);
         Button flashToggleButton = (Button) findViewById(R.id.buttonFlashToggle);
         eventHandlers.add(new FlashTogglePresenter(flashToggleButton, extension));
 

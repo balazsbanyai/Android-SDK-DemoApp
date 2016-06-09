@@ -3,11 +3,11 @@ package com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler;
 import android.view.View;
 
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
-import com.logmein.rescuesdk.api.ext.RemoteCameraViewExtension;
-import com.logmein.rescuesdk.api.remoteview.camera.event.FlashlightAvailable;
-import com.logmein.rescuesdk.api.remoteview.camera.event.FlashlightTurnedOff;
-import com.logmein.rescuesdk.api.remoteview.camera.event.FlashlightTurnedOn;
-import com.logmein.rescuesdk.api.remoteview.camera.event.FlashlightUnavailable;
+import com.logmein.rescuesdk.api.ext.CameraStreamingExtension;
+import com.logmein.rescuesdk.api.remoteview.camera.event.FlashlightAvailableEvent;
+import com.logmein.rescuesdk.api.remoteview.camera.event.FlashlightTurnedOffEvent;
+import com.logmein.rescuesdk.api.remoteview.camera.event.FlashlightTurnedOnEvent;
+import com.logmein.rescuesdk.api.remoteview.camera.event.FlashlightUnavailableEvent;
 
 /**
  * Manipulates the flashlight toggle button based on the related events.
@@ -15,7 +15,7 @@ import com.logmein.rescuesdk.api.remoteview.camera.event.FlashlightUnavailable;
 public class FlashTogglePresenter {
 
     private final View toggleButton;
-    private final RemoteCameraViewExtension extension;
+    private final CameraStreamingExtension extension;
 
     private final View.OnClickListener flashOnListener = new View.OnClickListener() {
         @Override
@@ -31,28 +31,28 @@ public class FlashTogglePresenter {
         }
     };
 
-    public FlashTogglePresenter(View toggleButton, RemoteCameraViewExtension extension) {
+    public FlashTogglePresenter(View toggleButton, CameraStreamingExtension extension) {
         this.toggleButton = toggleButton;
         this.extension = extension;
     }
 
     @Subscribe
-    public void onFlashAvailable(FlashlightAvailable event) {
+    public void onFlashAvailable(FlashlightAvailableEvent event) {
         showButton();
     }
 
     @Subscribe
-    public void onFlashUnavailable(FlashlightUnavailable event) {
+    public void onFlashUnavailable(FlashlightUnavailableEvent event) {
         hideButton();
     }
 
     @Subscribe
-    public void onFlashTurnedOn(FlashlightTurnedOn event) {
+    public void onFlashTurnedOn(FlashlightTurnedOnEvent event) {
         toggleButton.setOnClickListener(flashOffListener);
     }
 
     @Subscribe
-    public void onFlashTurnedOff(FlashlightTurnedOff event) {
+    public void onFlashTurnedOff(FlashlightTurnedOffEvent event) {
         toggleButton.setOnClickListener(flashOnListener);
     }
 
