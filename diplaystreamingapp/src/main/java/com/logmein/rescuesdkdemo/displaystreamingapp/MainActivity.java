@@ -14,7 +14,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.logmein.rescuesdk.api.ext.RemoteDisplayViewExtension;
+
+import com.logmein.rescuesdk.api.ext.DisplayStreamingExtension;
 import com.logmein.rescuesdk.api.session.Session;
 import com.logmein.rescuesdk.api.session.SessionFactory;
 import com.logmein.rescuesdk.api.session.config.SessionConfig;
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         cleanup();
 
         SessionFactory sessionFactory = SessionFactory.newInstance();
-        sessionFactory.useExtension(RemoteDisplayViewExtension.class);
+        sessionFactory.useExtension(DisplayStreamingExtension.class);
         sessionFactory.create(getApplicationContext(), apiKey, new SessionFactory.SessionCreationCallback() {
             @Override
             public void onSessionCreated(Session session) {
