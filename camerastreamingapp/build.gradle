@@ -44,23 +44,19 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.3.0'
     // Default logger implementation (optional)
     compile 'org.slf4j:slf4j-android:1.7.12'
+
     // Basic SDK dependency
-    compile('com.logmein.rescuesdk:core:latest.integration@aar') {
+    compile('com.logmein.rescuesdk:core:latest.integration@aar')
+
+    // Camera streaming dependency
+    compile('com.logmein.rescuesdk:camerastreaming:latest.integration@aar') {
         transitive = true
     }
-    compile('com.logmein.rescuesdk:camerastreaming:latest.integration@aar') {
-        transitive = false
-    }
-    //TODO: remove streamingcore dependency before release
-    compile('com.logmein.rescuesdk:streamingcore:latest.integration@aar') {
-        transitive = false
-    }
+
     // SDK Resource dependency (optional)
     compile('com.logmein.rescuesdk:resources:latest.integration@aar') {
         transitive = false
     }
     compile project(':core')
 
-    //TODO: remove mediaclientlib dependency before release
-    compile 'com.logmein.media:mediaclientlibjava-release:4.5.1.916'
 }

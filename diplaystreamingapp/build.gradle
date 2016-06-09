@@ -39,6 +39,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.3.0'
     // Default logger implementation (optional)
     compile 'org.slf4j:slf4j-android:1.7.12'
+
     // Basic SDK dependency
     compile('com.logmein.rescuesdk:core:latest.integration@aar') {
         transitive = true
@@ -48,8 +49,9 @@ dependencies {
         transitive = false
     }
 
-    compile('com.logmein.rescuesdk:streamingcore:latest.integration@aar')
-    compile('com.logmein.rescuesdk:displaystreaming:latest.integration@aar')
+    compile('com.logmein.rescuesdk:displaystreaming:latest.integration@aar') {
+        transitive = true
+    }
 
     compile project(':core')
 }
