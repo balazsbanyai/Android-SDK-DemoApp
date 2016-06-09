@@ -102,7 +102,7 @@ public class ChatLogAdapter extends BaseAdapter {
     }
 
     @Subscribe
-    public void onRemoteViewEvent(final StreamingEvent event) {
+    public void onStreamingEvent(final StreamingEvent event) {
         addSystemMessage(event);
     }
 
