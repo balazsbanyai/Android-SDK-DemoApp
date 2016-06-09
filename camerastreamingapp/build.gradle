@@ -54,7 +54,9 @@ dependencies {
     }
 
     // SDK Resource dependency (optional)
-    compile('com.logmein.rescuesdk:resources:latest.integration@aar')
+    compile('com.logmein.rescuesdk:resources:latest.integration@aar') {
+        transitive = false
+    }
     compile project(':core')
 
 }

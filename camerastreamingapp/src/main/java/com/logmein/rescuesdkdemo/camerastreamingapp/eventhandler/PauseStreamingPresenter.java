@@ -4,29 +4,32 @@ import android.view.View;
 import android.widget.Button;
 
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
-import com.logmein.rescuesdk.api.remoteview.RemoteViewClient;
-import com.logmein.rescuesdk.api.remoteview.event.RemoteCameraViewPausedEvent;
-import com.logmein.rescuesdk.api.remoteview.event.RemoteCameraViewResumedEvent;
-import com.logmein.rescuesdk.api.remoteview.event.RemoteViewStartedEvent;
-import com.logmein.rescuesdk.api.remoteview.event.RemoteViewStoppedEvent;
+import com.logmein.rescuesdk.api.remoteview.StreamingClient;
+import com.logmein.rescuesdk.api.remoteview.camera.event.CameraStreamingPausedEvent;
+import com.logmein.rescuesdk.api.remoteview.camera.event.CameraStreamingResumedEvent;
+import com.logmein.rescuesdk.api.remoteview.camera.event.CameraStreamingStartedEvent;
+import com.logmein.rescuesdk.api.remoteview.camera.event.CameraStreamingStoppedEvent;
 import com.logmein.rescuesdkdemo.camerastreamingapp.R;
 
+/**
+ * Manipulates the pause/resume streaming button based on the related events.
+ */
 public class PauseStreamingPresenter {
 
     private Button pauseStream;
-    private RemoteViewClient remoteViewClient;
+    private StreamingClient streamingClient;
 
     private final View.OnClickListener pauser = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            remoteViewClient.pause();
+            streamingClient.pause();
         }
     };
 
     private final View.OnClickListener resumer = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            remoteViewClient.resume();
+            streamingClient.resume();
         }
     };
 
@@ -35,27 +38,27 @@ public class PauseStreamingPresenter {
     }
 
     @Subscribe
-    public void onRemoteViewStartedEvent(final RemoteViewStartedEvent event) {
+    public void onRemoteViewStartedEvent(final CameraStreamingStartedEvent event) {
         pauseStream.setVisibility(View.VISIBLE);
-        remoteViewClient = event.getRemoteViewClient();
+        streamingClient = event.getStreamingClient();
         pauseStream.setOnClickListener(pauser);
     }
 
     @Subscribe
-    public void onRemoteViewStoppedEvent(final RemoteViewStoppedEvent event) {
+    public void onRemoteViewStoppedEvent(final CameraStreamingStoppedEvent event) {
         pauseStream.setVisibility(View.GONE);
         pauseStream.setOnClickListener(null);
-        remoteViewClient = null;
+        streamingClient = null;
     }
 
     @Subscribe
-    public void onRemoteViewPausedEvent(RemoteCameraViewPausedEvent event) {
+    public void onRemoteViewPausedEvent(CameraStreamingPausedEvent event) {
         pauseStream.setOnClickListener(resumer);
         pauseStream.setText(R.string.resume);
     }
 
     @Subscribe
-    public void onRemoteViewResumedEvent(RemoteCameraViewResumedEvent event) {
+    public void onRemoteViewResumedEvent(CameraStreamingResumedEvent event) {
         pauseStream.setOnClickListener(pauser);
         pauseStream.setText(R.string.pause);
     }

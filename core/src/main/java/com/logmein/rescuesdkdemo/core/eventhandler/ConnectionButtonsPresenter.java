@@ -12,23 +12,19 @@ import com.logmein.rescuesdk.api.session.event.DisconnectedEvent;
 public class ConnectionButtonsPresenter {
 
     private final View connectButton;
-    private final View sessionStatusContainer;
 
-    public ConnectionButtonsPresenter(View connectButton, View sessionStatusContainer) {
+    public ConnectionButtonsPresenter(View connectButton) {
         this.connectButton = connectButton;
-        this.sessionStatusContainer = sessionStatusContainer;
     }
 
     @Subscribe
     public void onConnectingEvent(ConnectingEvent event) {
         connectButton.setVisibility(View.GONE);
-        sessionStatusContainer.setVisibility(View.VISIBLE);
     }
 
     @Subscribe
     public void onDisconnectedEvent(DisconnectedEvent event) {
         connectButton.setVisibility(View.VISIBLE);
-        sessionStatusContainer.setVisibility(View.GONE);
         connectButton.setEnabled(true);
     }
 

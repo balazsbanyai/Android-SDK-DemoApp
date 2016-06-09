@@ -4,37 +4,37 @@ import android.view.View;
 import android.widget.Button;
 
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
-import com.logmein.rescuesdk.api.remoteview.RemoteViewClient;
-import com.logmein.rescuesdk.api.remoteview.event.RemoteViewStartedEvent;
-import com.logmein.rescuesdk.api.remoteview.event.RemoteViewStoppedEvent;
+import com.logmein.rescuesdk.api.remoteview.StreamingClient;
+import com.logmein.rescuesdk.api.remoteview.camera.event.CameraStreamingStartedEvent;
+import com.logmein.rescuesdk.api.remoteview.camera.event.CameraStreamingStoppedEvent;
 
 /**
  * Manipulates the display sharing button based on the related events
  */
 public class StopStreamingPresenter {
     private Button stopStreaming;
-    private RemoteViewClient remoteViewClient;
+    private StreamingClient streamingClient;
 
     public StopStreamingPresenter(Button stopStreaming) {
         this.stopStreaming = stopStreaming;
     }
 
     @Subscribe
-    public void onRemoteViewStartedEvent(final RemoteViewStartedEvent event) {
+    public void onCameraStreamingStartedEvent(final CameraStreamingStartedEvent event) {
         stopStreaming.setVisibility(View.VISIBLE);
-        remoteViewClient = event.getRemoteViewClient();
+        streamingClient = event.getStreamingClient();
         stopStreaming.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                remoteViewClient.stop();
+                streamingClient.stop();
             }
         });
     }
 
     @Subscribe
-    public void onRemoteViewStoppedEvent(final RemoteViewStoppedEvent event) {
+    public void onCameraStreamingStoppedEvent(final CameraStreamingStoppedEvent event) {
         stopStreaming.setVisibility(View.GONE);
         stopStreaming.setOnClickListener(null);
-        remoteViewClient = null;
+        streamingClient = null;
     }
 }

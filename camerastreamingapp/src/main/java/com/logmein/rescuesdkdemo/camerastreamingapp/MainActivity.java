@@ -12,11 +12,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.ext.CameraStreamView;
-import com.logmein.rescuesdk.api.ext.RemoteCameraViewExtension;
+import com.logmein.rescuesdk.api.ext.CameraStreamingExtension;
 import com.logmein.rescuesdk.api.session.Session;
 import com.logmein.rescuesdk.api.session.SessionFactory;
 import com.logmein.rescuesdk.api.session.config.SessionConfig;
+import com.logmein.rescuesdk.api.session.event.DisconnectedEvent;
+import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.FlashTogglePresenter;
 import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.PauseStreamingPresenter;
 import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.StopStreamingPresenter;
 import com.logmein.rescuesdkdemo.core.Settings;
@@ -52,11 +55,10 @@ public class MainActivity extends AppCompatActivity {
 
             switch (settings.getSessionConfigMode()) {
                 case PIN_MODE:
-                    final String apiKey = settings.getApiKey();
                     DialogFragment pinEntryFragment = PinCodeEntryDialogFragment.newInstance(new PinCodeEntryDialogFragment.OnResultListener() {
                         @Override
                         public void onResult(String pinCode) {
-                            startSession(SessionConfig.createWithPinCode(pinCode), apiKey);
+                            startSession(SessionConfig.createWithPinCode(pinCode));
                         }
                     });
                     pinEntryFragment.show(getSupportFragmentManager(), PinCodeEntryDialogFragment.TAG);
@@ -64,11 +66,11 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case CHANNEL_ID_MODE:
-                    startSession(SessionConfig.createWithChannelId(settings.getChannelId()), settings.getApiKey());
+                    startSession(SessionConfig.createWithChannelId(settings.getChannelId()));
                     break;
 
                 case CHANNEL_NAME_COMPANY_ID_MODE:
-                    startSession(SessionConfig.createWithChannelNameAndCompanyId(settings.getChannelName(), settings.getCompanyId()), settings.getApiKey());
+                    startSession(SessionConfig.createWithChannelNameAndCompanyId(settings.getChannelName(), settings.getCompanyId()));
                     break;
             }
         }
@@ -82,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if (rescueSession != null) {
-                rescueSession.getExtension(RemoteCameraViewExtension.class).stopRendering();
+                rescueSession.getExtension(CameraStreamingExtension.class).stopRendering();
                 rescueSession.disconnect();
             }
         }
@@ -103,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
         disconnectButton.setOnClickListener(new OnDisconnectListener());
 
         cameraStreamView = (CameraStreamView) findViewById(R.id.camera_stream_view);
+
+        createNewSession();
     }
 
     @Override
@@ -123,54 +127,82 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    /**
-     * (Re)starts the session and connects using the given configuration.
-     */
-    private void startSession(final SessionConfig sessionConfig, final String apiKey) {
+    private void createNewSession() {
+        createNewSession(null);
+    }
 
-        connectButton.setEnabled(false);
-
-        cleanup();
-
-        SessionFactory sessionFactory = SessionFactory.newInstance();
-        sessionFactory.useExtension(RemoteCameraViewExtension.class);
-        sessionFactory.create(getApplicationContext(), apiKey, new SessionFactory.SessionCreationCallback() {
+    private void createNewSession(final Runnable whenSessionCreated) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        Settings settings = new Settings(prefs);
+        final String apiKey = settings.getApiKey();
+        SessionFactory factory = SessionFactory.newInstance();
+        factory.useExtension(CameraStreamingExtension.class);
+        factory.create(getApplicationContext(), apiKey, new SessionFactory.SessionCreationCallback() {
             @Override
             public void onSessionCreated(Session session) {
                 rescueSession = session;
+                addHandlers();
+                CameraStreamingExtension extension = session.getExtension(CameraStreamingExtension.class);
+                extension.startRendering(cameraStreamView);
+                // After everything is set up, the session is ready to be connected
 
-                // Now we set up our event handlers and add them to the session's event bus.
-                // We store them in a list so that we can remove them from the bus later in the
-                // cleanup() method.
-                eventHandlers = new ArrayList<Object>();
-
-                StringResolver resolver = new StringResolver(MainActivity.this, session);
-
-
-                TextView textConnectionStatus = (TextView) findViewById(R.id.textConnectionStatus);
-                eventHandlers.add(new ConnectionStatusPresenter(textConnectionStatus, resolver));
-
-                Button connectButton = (Button) findViewById(R.id.connectButton);
-                View sessionStatusContainer = findViewById(R.id.sessionStatusContainer);
-                eventHandlers.add(new ConnectionButtonsPresenter(connectButton, sessionStatusContainer));
-
-                Button stopStreamingButton = (Button) findViewById(R.id.buttonStopStreaming);
-                Button pauseStreamingButton = (Button) findViewById(R.id.buttonPauseStreaming);
-                eventHandlers.add(new StopStreamingPresenter(stopStreamingButton));
-                eventHandlers.add(new PauseStreamingPresenter(pauseStreamingButton));
-
-                eventHandlers.add(new ErrorEventHandler(getSupportFragmentManager(), resolver));
-                eventHandlers.add(MainActivity.this);
-                for (final Object eventHandler : eventHandlers) {
-                    rescueSession.getEventBus().add(eventHandler);
+                if (whenSessionCreated != null) {
+                    whenSessionCreated.run();
                 }
-
-                rescueSession.getExtension(RemoteCameraViewExtension.class).startRendering(cameraStreamView);
-
-                // After everything is set up, we connect the session with the given configuration.
-                rescueSession.connect(sessionConfig);
             }
         });
+    }
+
+    private void addHandlers() {
+        // Now we set up our event handlers and add them to the session's event bus.
+        // We store them in a list so that we can remove them from the bus later in the
+        // cleanup() method.
+        eventHandlers = new ArrayList<Object>();
+
+        StringResolver resolver = new StringResolver(MainActivity.this, rescueSession);
+
+        TextView textConnectionStatus = (TextView) findViewById(R.id.textConnectionStatus);
+        eventHandlers.add(new ConnectionStatusPresenter(textConnectionStatus, resolver));
+
+        Button connectButton = (Button) findViewById(R.id.connectButton);
+        eventHandlers.add(new ConnectionButtonsPresenter(connectButton));
+
+        Button stopStreamingButton = (Button) findViewById(R.id.buttonStopStreaming);
+        Button pauseStreamingButton = (Button) findViewById(R.id.buttonPauseStreaming);
+        eventHandlers.add(new StopStreamingPresenter(stopStreamingButton));
+        eventHandlers.add(new PauseStreamingPresenter(pauseStreamingButton));
+
+        eventHandlers.add(new ErrorEventHandler(getSupportFragmentManager(), resolver));
+        eventHandlers.add(MainActivity.this);
+
+        CameraStreamingExtension extension = rescueSession.getExtension(CameraStreamingExtension.class);
+        Button flashToggleButton = (Button) findViewById(R.id.buttonFlashToggle);
+        eventHandlers.add(new FlashTogglePresenter(flashToggleButton, extension));
+
+        for (final Object eventHandler : eventHandlers) {
+            rescueSession.getEventBus().add(eventHandler);
+        }
+    }
+
+    /**
+     * (Re)starts the session and connects using the given configuration.
+     */
+    private void startSession(final SessionConfig sessionConfig) {
+
+        connectButton.setEnabled(false);
+
+        Runnable connectSessionTask = new Runnable() {
+            @Override
+            public void run() {
+                rescueSession.connect(sessionConfig);
+            }
+        };
+
+        if (rescueSession != null) {
+            connectSessionTask.run();
+        } else {
+            createNewSession(connectSessionTask);
+        }
 
     }
 
@@ -189,6 +221,11 @@ public class MainActivity extends AppCompatActivity {
             rescueSession.disconnect();
             rescueSession = null;
         }
+    }
+
+    @Subscribe
+    public void onSessionDisconnected(DisconnectedEvent e) {
+        cleanup();
     }
 
     @Override
