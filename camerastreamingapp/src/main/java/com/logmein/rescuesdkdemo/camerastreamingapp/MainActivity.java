@@ -1,10 +1,15 @@
 package com.logmein.rescuesdkdemo.camerastreamingapp;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,12 +43,14 @@ import java.util.List;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private static final int PERMISSION_REQUEST_FOR_CAMERA = 1;
+
     private Button connectButton;
     private Button disconnectButton;
     private CameraStreamView cameraStreamView;
 
     /**
-     * OnClickListener implementation which initiates Session connection to the given channel.
+     * OnClickListener implementation which initiates Session connection based on session configuration.
      */
     private class OnConnectListener implements View.OnClickListener {
 
@@ -106,7 +113,15 @@ public class MainActivity extends AppCompatActivity {
 
         cameraStreamView = (CameraStreamView) findViewById(R.id.camera_stream_view);
 
-        createNewSession();
+        int cameraPermissionStatus = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+
+        if (cameraPermissionStatus != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA},
+                    PERMISSION_REQUEST_FOR_CAMERA);
+        } else {
+            createNewSession();
+        }
     }
 
     @Override
@@ -126,6 +141,27 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_FOR_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    createNewSession();
+
+                } else {
+                    finish();
+                }
+            }
+            break;
+
+        }
+    }
+
 
     private void createNewSession() {
         createNewSession(null);
