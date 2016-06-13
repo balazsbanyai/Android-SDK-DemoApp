@@ -4,11 +4,11 @@ import android.view.View;
 import android.widget.Button;
 
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
-import com.logmein.rescuesdk.api.remoteview.StreamingClient;
-import com.logmein.rescuesdk.api.remoteview.camera.event.CameraStreamingPausedEvent;
-import com.logmein.rescuesdk.api.remoteview.camera.event.CameraStreamingResumedEvent;
-import com.logmein.rescuesdk.api.remoteview.camera.event.CameraStreamingStartedEvent;
-import com.logmein.rescuesdk.api.remoteview.camera.event.CameraStreamingStoppedEvent;
+import com.logmein.rescuesdk.api.streaming.StreamingClient;
+import com.logmein.rescuesdk.api.streaming.camera.event.CameraStreamingPausedEvent;
+import com.logmein.rescuesdk.api.streaming.camera.event.CameraStreamingResumedEvent;
+import com.logmein.rescuesdk.api.streaming.camera.event.CameraStreamingStartedEvent;
+import com.logmein.rescuesdk.api.streaming.camera.event.CameraStreamingStoppedEvent;
 import com.logmein.rescuesdkdemo.camerastreamingapp.R;
 
 /**
