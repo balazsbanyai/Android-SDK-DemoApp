@@ -4,10 +4,10 @@ import android.view.View;
 
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.ext.CameraStreamingExtension;
-import com.logmein.rescuesdk.api.remoteview.camera.event.FlashlightAvailableEvent;
-import com.logmein.rescuesdk.api.remoteview.camera.event.FlashlightTurnedOffEvent;
-import com.logmein.rescuesdk.api.remoteview.camera.event.FlashlightTurnedOnEvent;
-import com.logmein.rescuesdk.api.remoteview.camera.event.FlashlightUnavailableEvent;
+import com.logmein.rescuesdk.api.streaming.camera.event.FlashlightAvailableEvent;
+import com.logmein.rescuesdk.api.streaming.camera.event.FlashlightTurnedOffEvent;
+import com.logmein.rescuesdk.api.streaming.camera.event.FlashlightTurnedOnEvent;
+import com.logmein.rescuesdk.api.streaming.camera.event.FlashlightUnavailableEvent;
 
 /**
  * Manipulates the flashlight toggle button based on the related events.

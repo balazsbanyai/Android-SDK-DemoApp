@@ -15,7 +15,7 @@ import com.logmein.rescuesdk.api.chat.event.RemoteChatMessageEvent;
 import com.logmein.rescuesdk.api.chat.event.UrlMessageEvent;
 import com.logmein.rescuesdk.api.event.Event;
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
-import com.logmein.rescuesdk.api.remoteview.event.StreamingEvent;
+import com.logmein.rescuesdk.api.streaming.event.StreamingEvent;
 import com.logmein.rescuesdk.api.session.event.ConnectionEvent;
 import com.logmein.rescuesdkdemo.displaystreamingapp.R;
 import com.logmein.rescuesdkresources.StringResolver;
