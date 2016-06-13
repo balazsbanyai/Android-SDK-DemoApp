@@ -1,16 +1,22 @@
 package com.logmein.rescuesdkdemo.camerastreamingapp;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.ext.CameraStreamView;
@@ -19,6 +25,7 @@ import com.logmein.rescuesdk.api.session.Session;
 import com.logmein.rescuesdk.api.session.SessionFactory;
 import com.logmein.rescuesdk.api.session.config.SessionConfig;
 import com.logmein.rescuesdk.api.session.event.DisconnectedEvent;
+import com.logmein.rescuesdk.api.streaming.camera.event.CameraUnableToStartEvent;
 import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.FlashTogglePresenter;
 import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.PauseStreamingPresenter;
 import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.StopStreamingPresenter;
@@ -38,12 +45,14 @@ import java.util.List;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private static final int PERMISSION_REQUEST_FOR_CAMERA = 1;
+
     private Button connectButton;
     private Button disconnectButton;
     private CameraStreamView cameraStreamView;
 
     /**
-     * OnClickListener implementation which initiates Session connection to the given channel.
+     * OnClickListener implementation which initiates Session connection based on session configuration.
      */
     private class OnConnectListener implements View.OnClickListener {
 
@@ -106,7 +115,15 @@ public class MainActivity extends AppCompatActivity {
 
         cameraStreamView = (CameraStreamView) findViewById(R.id.camera_stream_view);
 
-        createNewSession();
+        int cameraPermissionStatus = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+
+        if (cameraPermissionStatus != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA},
+                    PERMISSION_REQUEST_FOR_CAMERA);
+        } else {
+            createNewSession();
+        }
     }
 
     @Override
@@ -126,6 +143,27 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_FOR_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    createNewSession();
+
+                } else {
+                    finish();
+                }
+            }
+            break;
+
+        }
+    }
+
 
     private void createNewSession() {
         createNewSession(null);
@@ -227,6 +265,16 @@ public class MainActivity extends AppCompatActivity {
     public void onSessionDisconnected(DisconnectedEvent e) {
         cleanup();
     }
+
+    @Subscribe
+    public void onUnableToStartCamera(CameraUnableToStartEvent e) {
+        CharSequence warningText = "Unable to access camera! It may be used by another app!";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(this, warningText, duration);
+        toast.show();
+    }
+
 
     @Override
     protected void onDestroy() {
