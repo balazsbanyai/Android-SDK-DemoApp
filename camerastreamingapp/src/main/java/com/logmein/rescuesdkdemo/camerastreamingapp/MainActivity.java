@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.ext.CameraStreamView;
@@ -24,6 +25,7 @@ import com.logmein.rescuesdk.api.session.Session;
 import com.logmein.rescuesdk.api.session.SessionFactory;
 import com.logmein.rescuesdk.api.session.config.SessionConfig;
 import com.logmein.rescuesdk.api.session.event.DisconnectedEvent;
+import com.logmein.rescuesdk.api.streaming.camera.event.CameraUnableToStartEvent;
 import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.FlashTogglePresenter;
 import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.PauseStreamingPresenter;
 import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.StopStreamingPresenter;
@@ -263,6 +265,16 @@ public class MainActivity extends AppCompatActivity {
     public void onSessionDisconnected(DisconnectedEvent e) {
         cleanup();
     }
+
+    @Subscribe
+    public void onUnableToStartCamera(CameraUnableToStartEvent e) {
+        CharSequence warningText = "Unable to access camera! It may be used by another app!";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(this, warningText, duration);
+        toast.show();
+    }
+
 
     @Override
     protected void onDestroy() {
