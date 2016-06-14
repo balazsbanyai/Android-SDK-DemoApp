@@ -171,6 +171,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createNewSession(final Runnable whenSessionCreated) {
+
+        if (rescueSession!= null ) {
+            for (final Object eventHandler : eventHandlers) {
+                rescueSession.getEventBus().remove(eventHandler);
+            }
+            eventHandlers.clear();
+        }
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         Settings settings = new Settings(prefs);
         final String apiKey = settings.getApiKey();
@@ -261,11 +269,6 @@ public class MainActivity extends AppCompatActivity {
 
             CameraStreamingExtension e = rescueSession.getExtension(CameraStreamingExtension.class);
             e.stopRendering();
-
-            for (final Object eventHandler : eventHandlers) {
-                rescueSession.getEventBus().remove(eventHandler);
-            }
-            eventHandlers.clear();
 
             rescueSession.disconnect();
             rescueSession = null;
