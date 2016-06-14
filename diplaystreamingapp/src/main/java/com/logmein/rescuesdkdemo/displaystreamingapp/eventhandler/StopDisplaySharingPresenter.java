@@ -33,7 +33,7 @@ public class StopDisplaySharingPresenter {
 
     @Subscribe
     public void onDisplayStreamingStoppedEvent(final DisplayStreamingStoppedEvent event) {
-        stopDisplaySharing .setVisibility(View.INVISIBLE);
+        stopDisplaySharing.setVisibility(View.GONE);
         stopDisplaySharing.setOnClickListener(null);
         remoteViewClient = null;
     }

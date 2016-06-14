@@ -31,4 +31,6 @@
     <string name="channel_name_label">Channel Name</string>
     <string name="company_id_label">Company ID</string>
     <string name="settings_menu_label">Settings</string>
+    <string name="pause">Pause stream</string>
+    <string name="resume">Resume stream</string>
 </resources>

@@ -25,7 +25,7 @@ import com.logmein.rescuesdkdemo.core.SettingsActivity;
 import com.logmein.rescuesdkdemo.core.dialog.PinCodeEntryDialogFragment;
 import com.logmein.rescuesdkdemo.displaystreamingapp.eventhandler.ChatMessagePresenter;
 import com.logmein.rescuesdkdemo.displaystreamingapp.eventhandler.ChatSendPresenter;
-import com.logmein.rescuesdkdemo.core.eventhandler.ConnectionButtonsPresenter;
+import com.logmein.rescuesdkdemo.core.eventhandler.DisconnectButtonPresenter;
 import com.logmein.rescuesdkdemo.core.eventhandler.ConnectionStatusPresenter;
 import com.logmein.rescuesdkdemo.core.eventhandler.ErrorEventHandler;
 import com.logmein.rescuesdkdemo.displaystreamingapp.eventhandler.StopDisplaySharingPresenter;
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        connectButton = (Button) findViewById(R.id.connectButton);
+        connectButton = (Button) findViewById(R.id.buttonConnect);
         connectButton.setOnClickListener(new OnConnectListener());
 
         disconnectButton = (Button) findViewById(R.id.buttonDisconnect);
@@ -159,9 +159,11 @@ public class MainActivity extends AppCompatActivity {
                 TextView textConnectionStatus = (TextView) findViewById(R.id.textConnectionStatus);
                 eventHandlers.add(new ConnectionStatusPresenter(textConnectionStatus, resolver));
 
-                Button connectButton = (Button) findViewById(R.id.connectButton);
-                View sessionStatusContainer = findViewById(R.id.sessionStatusContainer);
-                eventHandlers.add(new ConnectionButtonsPresenter(connectButton));
+                Button connectButton = (Button) findViewById(R.id.buttonConnect);
+                eventHandlers.add(new DisconnectButtonPresenter(connectButton));
+
+                Button disconnectButton = (Button) findViewById(R.id.buttonDisconnect);
+                eventHandlers.add(new DisconnectButtonPresenter(disconnectButton));
 
                 EditText chatMessage = (EditText) findViewById(R.id.editChatMessage);
                 eventHandlers.add(new ChatMessagePresenter(chatMessage));
@@ -172,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
                 TextView typing = (TextView) findViewById(R.id.textTypingNotification);
                 eventHandlers.add(new TypingPresenter(typing, resolver));
 
-                Button stopRcButton = (Button) findViewById(R.id.buttonStopRc);
+                Button stopRcButton = (Button) findViewById(R.id.buttonStopStreaming);
                 eventHandlers.add(new StopDisplaySharingPresenter(stopRcButton));
 
                 eventHandlers.add(new ErrorEventHandler(getSupportFragmentManager(), resolver));
