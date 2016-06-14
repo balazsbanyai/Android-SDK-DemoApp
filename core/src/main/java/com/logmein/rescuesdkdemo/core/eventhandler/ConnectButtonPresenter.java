@@ -9,11 +9,11 @@ import com.logmein.rescuesdk.api.session.event.DisconnectedEvent;
 /**
  * Manipulates the connection button based on the related events.
  */
-public class ConnectionButtonsPresenter {
+public class ConnectButtonPresenter {
 
     private final View connectButton;
 
-    public ConnectionButtonsPresenter(View connectButton) {
+    public ConnectButtonPresenter(View connectButton) {
         this.connectButton = connectButton;
     }
 

@@ -28,11 +28,13 @@ import com.logmein.rescuesdk.api.session.event.DisconnectedEvent;
 import com.logmein.rescuesdk.api.streaming.camera.event.CameraUnableToStartEvent;
 import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.FlashTogglePresenter;
 import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.PauseStreamingPresenter;
+import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.RenderTooglePresenter;
 import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.StopStreamingPresenter;
 import com.logmein.rescuesdkdemo.core.Settings;
 import com.logmein.rescuesdkdemo.core.SettingsActivity;
 import com.logmein.rescuesdkdemo.core.dialog.PinCodeEntryDialogFragment;
-import com.logmein.rescuesdkdemo.core.eventhandler.ConnectionButtonsPresenter;
+import com.logmein.rescuesdkdemo.core.eventhandler.ConnectButtonPresenter;
+import com.logmein.rescuesdkdemo.core.eventhandler.DisconnectButtonPresenter;
 import com.logmein.rescuesdkdemo.core.eventhandler.ConnectionStatusPresenter;
 import com.logmein.rescuesdkdemo.core.eventhandler.ErrorEventHandler;
 import com.logmein.rescuesdkresources.StringResolver;
@@ -93,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if (rescueSession != null) {
-                rescueSession.getExtension(CameraStreamingExtension.class).stopRendering();
                 rescueSession.disconnect();
             }
         }
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        connectButton = (Button) findViewById(R.id.connectButton);
+        connectButton = (Button) findViewById(R.id.buttonConnect);
         connectButton.setOnClickListener(new OnConnectListener());
 
         disconnectButton = (Button) findViewById(R.id.buttonDisconnect);
@@ -202,12 +203,16 @@ public class MainActivity extends AppCompatActivity {
         TextView textConnectionStatus = (TextView) findViewById(R.id.textConnectionStatus);
         eventHandlers.add(new ConnectionStatusPresenter(textConnectionStatus, resolver));
 
-        Button connectButton = (Button) findViewById(R.id.connectButton);
-        eventHandlers.add(new ConnectionButtonsPresenter(connectButton));
+        Button connectButton = (Button) findViewById(R.id.buttonConnect);
+        eventHandlers.add(new ConnectButtonPresenter(connectButton));
+
+        Button disconnectButton = (Button) findViewById(R.id.buttonDisconnect);
+        eventHandlers.add(new DisconnectButtonPresenter(disconnectButton));
 
         Button stopStreamingButton = (Button) findViewById(R.id.buttonStopStreaming);
-        Button pauseStreamingButton = (Button) findViewById(R.id.buttonPauseStreaming);
         eventHandlers.add(new StopStreamingPresenter(stopStreamingButton));
+
+        Button pauseStreamingButton = (Button) findViewById(R.id.buttonPauseStreaming);
         eventHandlers.add(new PauseStreamingPresenter(pauseStreamingButton));
 
         eventHandlers.add(new ErrorEventHandler(getSupportFragmentManager(), resolver));
@@ -216,6 +221,10 @@ public class MainActivity extends AppCompatActivity {
         CameraStreamingExtension extension = rescueSession.getExtension(CameraStreamingExtension.class);
         Button flashToggleButton = (Button) findViewById(R.id.buttonFlashToggle);
         eventHandlers.add(new FlashTogglePresenter(flashToggleButton, extension));
+
+        Button toogleRenderButton = (Button) findViewById(R.id.buttonToogleRendering);
+        toogleRenderButton.setVisibility(View.VISIBLE);
+        eventHandlers.add(new RenderTooglePresenter(toogleRenderButton, extension, cameraStreamView));
 
         for (final Object eventHandler : eventHandlers) {
             rescueSession.getEventBus().add(eventHandler);
@@ -249,13 +258,15 @@ public class MainActivity extends AppCompatActivity {
      */
     private void cleanup() {
         if (rescueSession != null) {
+
+            CameraStreamingExtension e = rescueSession.getExtension(CameraStreamingExtension.class);
+            e.stopRendering();
+
             for (final Object eventHandler : eventHandlers) {
                 rescueSession.getEventBus().remove(eventHandler);
             }
             eventHandlers.clear();
-        }
 
-        if (rescueSession != null) {
             rescueSession.disconnect();
             rescueSession = null;
         }
