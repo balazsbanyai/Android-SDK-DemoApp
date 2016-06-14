@@ -2,13 +2,8 @@ package com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler;
 
 import android.view.View;
 
-import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.ext.CameraStreamView;
 import com.logmein.rescuesdk.api.ext.CameraStreamingExtension;
-import com.logmein.rescuesdk.api.streaming.camera.event.FlashlightAvailableEvent;
-import com.logmein.rescuesdk.api.streaming.camera.event.FlashlightTurnedOffEvent;
-import com.logmein.rescuesdk.api.streaming.camera.event.FlashlightTurnedOnEvent;
-import com.logmein.rescuesdk.api.streaming.camera.event.FlashlightUnavailableEvent;
 
 /**
  * Manipulates the rendering toggle button based on the related events.
