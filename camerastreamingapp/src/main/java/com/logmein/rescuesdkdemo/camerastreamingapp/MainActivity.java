@@ -34,8 +34,8 @@ import com.logmein.rescuesdkdemo.core.Settings;
 import com.logmein.rescuesdkdemo.core.SettingsActivity;
 import com.logmein.rescuesdkdemo.core.dialog.PinCodeEntryDialogFragment;
 import com.logmein.rescuesdkdemo.core.eventhandler.ConnectButtonPresenter;
-import com.logmein.rescuesdkdemo.core.eventhandler.DisconnectButtonPresenter;
 import com.logmein.rescuesdkdemo.core.eventhandler.ConnectionStatusPresenter;
+import com.logmein.rescuesdkdemo.core.eventhandler.DisconnectButtonPresenter;
 import com.logmein.rescuesdkdemo.core.eventhandler.ErrorEventHandler;
 import com.logmein.rescuesdkresources.StringResolver;
 
@@ -122,8 +122,6 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.CAMERA},
                     PERMISSION_REQUEST_FOR_CAMERA);
-        } else {
-            createNewSession();
         }
     }
 
@@ -153,9 +151,6 @@ public class MainActivity extends AppCompatActivity {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    createNewSession();
-
                 } else {
                     finish();
                 }
@@ -165,14 +160,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    private void createNewSession() {
-        createNewSession(null);
-    }
-
     private void createNewSession(final Runnable whenSessionCreated) {
 
-        if (rescueSession!= null ) {
+        if (rescueSession != null) {
             for (final Object eventHandler : eventHandlers) {
                 rescueSession.getEventBus().remove(eventHandler);
             }
@@ -253,12 +243,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        if (rescueSession != null) {
-            connectSessionTask.run();
-        } else {
-            createNewSession(connectSessionTask);
-        }
-
+        createNewSession(connectSessionTask);
     }
 
     /**
