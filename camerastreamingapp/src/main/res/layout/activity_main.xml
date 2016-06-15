@@ -82,7 +82,8 @@
                 android:id="@+id/buttonDisconnect"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/disconnect" />
+                android:text="@string/disconnect"
+                android:visibility="gone"/>
         </LinearLayout>
 
     </RelativeLayout>
