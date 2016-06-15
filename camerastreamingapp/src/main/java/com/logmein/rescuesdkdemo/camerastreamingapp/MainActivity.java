@@ -34,8 +34,8 @@ import com.logmein.rescuesdkdemo.core.Settings;
 import com.logmein.rescuesdkdemo.core.SettingsActivity;
 import com.logmein.rescuesdkdemo.core.dialog.PinCodeEntryDialogFragment;
 import com.logmein.rescuesdkdemo.core.eventhandler.ConnectButtonPresenter;
-import com.logmein.rescuesdkdemo.core.eventhandler.DisconnectButtonPresenter;
 import com.logmein.rescuesdkdemo.core.eventhandler.ConnectionStatusPresenter;
+import com.logmein.rescuesdkdemo.core.eventhandler.DisconnectButtonPresenter;
 import com.logmein.rescuesdkdemo.core.eventhandler.ErrorEventHandler;
 import com.logmein.rescuesdkresources.StringResolver;
 
@@ -253,12 +253,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        if (rescueSession != null) {
-            connectSessionTask.run();
-        } else {
-            createNewSession(connectSessionTask);
-        }
-
+        createNewSession(connectSessionTask);
     }
 
     /**
