@@ -171,7 +171,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createNewSession(final Runnable whenSessionCreated) {
-
         if (rescueSession!= null ) {
             for (final Object eventHandler : eventHandlers) {
                 rescueSession.getEventBus().remove(eventHandler);
@@ -269,11 +268,6 @@ public class MainActivity extends AppCompatActivity {
             rescueSession.disconnect();
             rescueSession = null;
         }
-    }
-
-    @Subscribe
-    public void onSessionDisconnected(DisconnectedEvent e) {
-        cleanup();
     }
 
     @Subscribe
