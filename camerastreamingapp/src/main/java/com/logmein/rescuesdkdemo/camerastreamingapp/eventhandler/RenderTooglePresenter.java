@@ -1,6 +1,7 @@
 package com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler;
 
 import android.view.View;
+import android.widget.Switch;
 
 import com.logmein.rescuesdk.api.ext.CameraStreamView;
 import com.logmein.rescuesdk.api.ext.CameraStreamingExtension;
@@ -10,14 +11,14 @@ import com.logmein.rescuesdk.api.ext.CameraStreamingExtension;
  */
 public class RenderTooglePresenter {
 
-    private final View toggleButton;
+    private final Switch toggleButton;
     private final CameraStreamingExtension extension;
     private final CameraStreamView cameraStreamView;
     private final View.OnClickListener renderOnListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             extension.startRendering(cameraStreamView);
-            toggleButton.setOnClickListener(renderOffListener);
+            setButtonOn();
         }
     };
 
@@ -25,16 +26,26 @@ public class RenderTooglePresenter {
         @Override
         public void onClick(View v) {
             extension.stopRendering();
-            toggleButton.setOnClickListener(renderOnListener);
+            setButtonOff();
         }
     };
 
-    public RenderTooglePresenter(View toggleButton, CameraStreamingExtension extension, CameraStreamView cameraStreamView) {
+    public RenderTooglePresenter(Switch toggleButton, CameraStreamingExtension extension, CameraStreamView cameraStreamView) {
         this.toggleButton = toggleButton;
         this.extension = extension;
         this.cameraStreamView = cameraStreamView;
 
         toggleButton.setOnClickListener(renderOffListener);
+    }
+
+    public void setButtonOn() {
+        toggleButton.setOnClickListener(renderOffListener);
+        toggleButton.setChecked(true);
+    }
+
+    public void setButtonOff() {
+        toggleButton.setOnClickListener(renderOnListener);
+        toggleButton.setChecked(false);
     }
 
 }

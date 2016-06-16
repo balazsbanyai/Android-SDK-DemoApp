@@ -3,6 +3,6 @@
     <string name="stop_rc">Stop stream</string>
     <string name="app_name">Camera streaming demo</string>
 
-    <string name="toggle_flash">Toggle flash</string>
-    <string name="toogle_render">Toogle rendering</string>
+    <string name="toggle_flash">Flash</string>
+    <string name="toogle_render">Rendering</string>
 </resources>

@@ -43,47 +43,49 @@
 
             <Button
                 android:id="@+id/buttonConnect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:textSize="13sp"
                 android:text="@string/connect" />
 
             <Button
+                android:id="@+id/buttonDisconnect"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:textSize="13sp"
+                android:text="@string/disconnect"
+                android:visibility="gone"/>
+
+            <Switch
                 android:id="@+id/buttonToogleRendering"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
                 android:text="@string/toogle_render"
+                android:textColor="@android:color/white"
+                tools:visibility="visible"
                 android:visibility="gone" />
 
             <Button
                 android:id="@+id/buttonStopStreaming"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="36dp"
                 android:text="@string/stop_rc"
                 android:visibility="gone" />
 
             <Button
                 android:id="@+id/buttonPauseStreaming"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
                 android:text="@string/pause"
                 android:visibility="gone" />
 
-            <Button
+            <Switch
                 android:id="@+id/buttonFlashToggle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
                 android:text="@string/toggle_flash"
+                android:textColor="@android:color/white"
                 android:visibility="gone" />
-
-            <Button
-                android:id="@+id/buttonDisconnect"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/disconnect"
-                android:visibility="gone"/>
         </LinearLayout>
 
     </RelativeLayout>

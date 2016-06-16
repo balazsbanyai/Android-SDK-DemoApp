@@ -1,6 +1,7 @@
 package com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler;
 
 import android.view.View;
+import android.widget.Switch;
 
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.ext.CameraStreamingExtension;
@@ -14,7 +15,7 @@ import com.logmein.rescuesdk.api.streaming.camera.event.FlashlightUnavailableEve
  */
 public class FlashTogglePresenter {
 
-    private final View toggleButton;
+    private final Switch toggleButton;
     private final CameraStreamingExtension extension;
 
     private final View.OnClickListener flashOnListener = new View.OnClickListener() {
@@ -31,7 +32,7 @@ public class FlashTogglePresenter {
         }
     };
 
-    public FlashTogglePresenter(View toggleButton, CameraStreamingExtension extension) {
+    public FlashTogglePresenter(Switch toggleButton, CameraStreamingExtension extension) {
         this.toggleButton = toggleButton;
         this.extension = extension;
     }
@@ -49,11 +50,13 @@ public class FlashTogglePresenter {
     @Subscribe
     public void onFlashTurnedOn(FlashlightTurnedOnEvent event) {
         toggleButton.setOnClickListener(flashOffListener);
+        toggleButton.setChecked(true);
     }
 
     @Subscribe
     public void onFlashTurnedOff(FlashlightTurnedOffEvent event) {
         toggleButton.setOnClickListener(flashOnListener);
+        toggleButton.setChecked(false);
     }
 
     private void showButton() {

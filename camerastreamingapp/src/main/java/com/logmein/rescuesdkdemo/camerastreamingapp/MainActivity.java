@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +25,6 @@ import com.logmein.rescuesdk.api.ext.CameraStreamingExtension;
 import com.logmein.rescuesdk.api.session.Session;
 import com.logmein.rescuesdk.api.session.SessionFactory;
 import com.logmein.rescuesdk.api.session.config.SessionConfig;
-import com.logmein.rescuesdk.api.session.event.DisconnectedEvent;
 import com.logmein.rescuesdk.api.streaming.camera.event.CameraUnableToStartEvent;
 import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.FlashTogglePresenter;
 import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.PauseStreamingPresenter;
@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private Button connectButton;
     private Button disconnectButton;
     private CameraStreamView cameraStreamView;
+    private RenderTooglePresenter renderTogglePresenter;
 
     /**
      * OnClickListener implementation which initiates Session connection based on session configuration.
@@ -190,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
                 addHandlers();
                 CameraStreamingExtension extension = session.getExtension(CameraStreamingExtension.class);
                 extension.startRendering(cameraStreamView);
+                renderTogglePresenter.setButtonOn();
                 // After everything is set up, the session is ready to be connected
 
                 if (whenSessionCreated != null) {
@@ -226,12 +228,13 @@ public class MainActivity extends AppCompatActivity {
         eventHandlers.add(MainActivity.this);
 
         CameraStreamingExtension extension = rescueSession.getExtension(CameraStreamingExtension.class);
-        Button flashToggleButton = (Button) findViewById(R.id.buttonFlashToggle);
+        Switch flashToggleButton = (Switch) findViewById(R.id.buttonFlashToggle);
         eventHandlers.add(new FlashTogglePresenter(flashToggleButton, extension));
 
-        Button toogleRenderButton = (Button) findViewById(R.id.buttonToogleRendering);
+        Switch toogleRenderButton = (Switch) findViewById(R.id.buttonToogleRendering);
         toogleRenderButton.setVisibility(View.VISIBLE);
-        eventHandlers.add(new RenderTooglePresenter(toogleRenderButton, extension, cameraStreamView));
+        renderTogglePresenter = new RenderTooglePresenter(toogleRenderButton, extension, cameraStreamView);
+        eventHandlers.add(renderTogglePresenter);
 
         for (final Object eventHandler : eventHandlers) {
             rescueSession.getEventBus().add(eventHandler);
@@ -264,6 +267,8 @@ public class MainActivity extends AppCompatActivity {
 
             CameraStreamingExtension e = rescueSession.getExtension(CameraStreamingExtension.class);
             e.stopRendering();
+            renderTogglePresenter.setButtonOff();
+
 
             rescueSession.disconnect();
             rescueSession = null;
