@@ -253,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        cleanup();
         createNewSession(connectSessionTask);
     }
 
