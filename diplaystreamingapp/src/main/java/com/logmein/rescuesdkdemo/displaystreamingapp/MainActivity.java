@@ -19,6 +19,7 @@ import com.logmein.rescuesdk.api.ext.DisplayStreamingExtension;
 import com.logmein.rescuesdk.api.session.Session;
 import com.logmein.rescuesdk.api.session.SessionFactory;
 import com.logmein.rescuesdk.api.session.config.SessionConfig;
+import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.PauseStreamingPresenter;
 import com.logmein.rescuesdkdemo.displaystreamingapp.adapter.ChatLogAdapter;
 import com.logmein.rescuesdkdemo.core.Settings;
 import com.logmein.rescuesdkdemo.core.SettingsActivity;
@@ -176,6 +177,9 @@ public class MainActivity extends AppCompatActivity {
 
                 Button stopRcButton = (Button) findViewById(R.id.buttonStopStreaming);
                 eventHandlers.add(new StopDisplaySharingPresenter(stopRcButton));
+
+                Button pauseStreamingButton = (Button) findViewById(R.id.buttonPauseStreaming);
+                eventHandlers.add(new PauseStreamingPresenter(pauseStreamingButton));
 
                 eventHandlers.add(new ErrorEventHandler(getSupportFragmentManager(), resolver));
                 eventHandlers.add(MainActivity.this);

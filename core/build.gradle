@@ -37,6 +37,11 @@ dependencies {
     compile('com.logmein.rescuesdk:core:latest.integration@aar') {
         transitive = true
     }
+
+    compile('com.logmein.rescuesdk:streamingcore:latest.integration@aar') {
+        transitive = true
+    }
+
     // SDK Resource dependency (optional)
     compile('com.logmein.rescuesdk:resources:latest.integration@aar') {
         transitive = false
