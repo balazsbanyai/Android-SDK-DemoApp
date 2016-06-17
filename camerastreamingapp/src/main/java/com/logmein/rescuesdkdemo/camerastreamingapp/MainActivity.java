@@ -27,7 +27,7 @@ import com.logmein.rescuesdk.api.session.SessionFactory;
 import com.logmein.rescuesdk.api.session.config.SessionConfig;
 import com.logmein.rescuesdk.api.streaming.camera.event.CameraUnableToStartEvent;
 import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.FlashTogglePresenter;
-import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.PauseStreamingPresenter;
+import com.logmein.rescuesdkdemo.core.eventhandler.PauseStreamingPresenter;
 import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.RenderTooglePresenter;
 import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.StopStreamingPresenter;
 import com.logmein.rescuesdkdemo.core.Settings;

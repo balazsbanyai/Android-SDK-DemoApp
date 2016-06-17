@@ -10,7 +10,7 @@ import android.preference.PreferenceFragment;
 import android.text.InputType;
 import android.text.TextUtils;
 
-import com.logmein.rescuesdkdemo.displaystreamingapp.rescuesdkdemo.core.R;
+import com.logmein.rescuesdkdemo.core.R;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler;
+package com.logmein.rescuesdkdemo.core.eventhandler;
 
 import android.view.View;
 import android.widget.Button;
@@ -9,7 +9,8 @@ import com.logmein.rescuesdk.api.streaming.event.StreamingPausedEvent;
 import com.logmein.rescuesdk.api.streaming.event.StreamingResumedEvent;
 import com.logmein.rescuesdk.api.streaming.event.StreamingStartedEvent;
 import com.logmein.rescuesdk.api.streaming.event.StreamingStoppedEvent;
-import com.logmein.rescuesdkdemo.displaystreamingapp.rescuesdkdemo.core.R;
+
+import com.logmein.rescuesdkdemo.core.R;
 
 /**
  * Manipulates the pause/resume streaming button based on the related events.

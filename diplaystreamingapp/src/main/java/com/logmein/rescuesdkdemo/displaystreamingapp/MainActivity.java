@@ -19,7 +19,7 @@ import com.logmein.rescuesdk.api.ext.DisplayStreamingExtension;
 import com.logmein.rescuesdk.api.session.Session;
 import com.logmein.rescuesdk.api.session.SessionFactory;
 import com.logmein.rescuesdk.api.session.config.SessionConfig;
-import com.logmein.rescuesdkdemo.camerastreamingapp.eventhandler.PauseStreamingPresenter;
+import com.logmein.rescuesdkdemo.core.eventhandler.PauseStreamingPresenter;
 import com.logmein.rescuesdkdemo.displaystreamingapp.adapter.ChatLogAdapter;
 import com.logmein.rescuesdkdemo.core.Settings;
 import com.logmein.rescuesdkdemo.core.SettingsActivity;

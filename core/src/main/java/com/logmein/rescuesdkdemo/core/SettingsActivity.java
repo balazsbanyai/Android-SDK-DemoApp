@@ -3,7 +3,7 @@ package com.logmein.rescuesdkdemo.core;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.logmein.rescuesdkdemo.displaystreamingapp.rescuesdkdemo.core.R;
+import com.logmein.rescuesdkdemo.core.R;
 
 public class SettingsActivity extends AppCompatActivity {
 

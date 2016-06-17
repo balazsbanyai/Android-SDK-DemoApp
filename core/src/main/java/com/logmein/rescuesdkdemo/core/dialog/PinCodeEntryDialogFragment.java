@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.logmein.rescuesdkdemo.displaystreamingapp.rescuesdkdemo.core.R;
+import com.logmein.rescuesdkdemo.core.R;
 
 /**
  * DialogFragment to display a PIN-code entry dialog.
