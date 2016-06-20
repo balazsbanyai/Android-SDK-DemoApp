@@ -15,8 +15,8 @@ import com.logmein.rescuesdk.api.chat.event.RemoteChatMessageEvent;
 import com.logmein.rescuesdk.api.chat.event.UrlMessageEvent;
 import com.logmein.rescuesdk.api.event.Event;
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
+import com.logmein.rescuesdk.api.session.event.ConnectionStateEvent;
 import com.logmein.rescuesdk.api.streaming.event.StreamingEvent;
-import com.logmein.rescuesdk.api.session.event.ConnectionEvent;
 import com.logmein.rescuesdkdemo.displaystreamingapp.R;
 import com.logmein.rescuesdkresources.StringResolver;
 
@@ -97,7 +97,7 @@ public class ChatLogAdapter extends BaseAdapter {
     }
 
     @Subscribe
-    public void onConnectionEvent(ConnectionEvent event) {
+    public void onConnectionEvent(ConnectionStateEvent event) {
         addSystemMessage(event);
     }
 
