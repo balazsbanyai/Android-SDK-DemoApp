@@ -136,6 +136,8 @@ public class MainActivity extends AppCompatActivity {
      *
      */
     private void startSession(final SessionConfig sessionConfig, final String apiKey) {
+        connectButton.setEnabled(false);
+
         cleanup();
 
         SessionFactory sessionFactory = SessionFactory.newInstance();
