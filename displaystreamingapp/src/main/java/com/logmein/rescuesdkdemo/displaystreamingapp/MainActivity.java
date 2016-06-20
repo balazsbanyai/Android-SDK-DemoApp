@@ -14,21 +14,21 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
 import com.logmein.rescuesdk.api.ext.DisplayStreamingExtension;
 import com.logmein.rescuesdk.api.session.Session;
 import com.logmein.rescuesdk.api.session.SessionFactory;
 import com.logmein.rescuesdk.api.session.config.SessionConfig;
-import com.logmein.rescuesdkdemo.core.eventhandler.PauseStreamingPresenter;
-import com.logmein.rescuesdkdemo.displaystreamingapp.adapter.ChatLogAdapter;
 import com.logmein.rescuesdkdemo.core.Settings;
 import com.logmein.rescuesdkdemo.core.SettingsActivity;
 import com.logmein.rescuesdkdemo.core.dialog.PinCodeEntryDialogFragment;
+import com.logmein.rescuesdkdemo.core.eventhandler.ConnectButtonPresenter;
+import com.logmein.rescuesdkdemo.core.eventhandler.ConnectionStatusPresenter;
+import com.logmein.rescuesdkdemo.core.eventhandler.DisconnectButtonPresenter;
+import com.logmein.rescuesdkdemo.core.eventhandler.ErrorEventHandler;
+import com.logmein.rescuesdkdemo.core.eventhandler.PauseStreamingPresenter;
+import com.logmein.rescuesdkdemo.displaystreamingapp.adapter.ChatLogAdapter;
 import com.logmein.rescuesdkdemo.displaystreamingapp.eventhandler.ChatMessagePresenter;
 import com.logmein.rescuesdkdemo.displaystreamingapp.eventhandler.ChatSendPresenter;
-import com.logmein.rescuesdkdemo.core.eventhandler.DisconnectButtonPresenter;
-import com.logmein.rescuesdkdemo.core.eventhandler.ConnectionStatusPresenter;
-import com.logmein.rescuesdkdemo.core.eventhandler.ErrorEventHandler;
 import com.logmein.rescuesdkdemo.displaystreamingapp.eventhandler.StopDisplaySharingPresenter;
 import com.logmein.rescuesdkdemo.displaystreamingapp.eventhandler.TypingPresenter;
 import com.logmein.rescuesdkresources.StringResolver;
@@ -136,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
      *
      */
     private void startSession(final SessionConfig sessionConfig, final String apiKey) {
-
         connectButton.setEnabled(false);
 
         cleanup();
@@ -147,51 +146,52 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSessionCreated(Session session) {
                 rescueSession = session;
-
-                // Now we set up our event handlers and add them to the session's event bus.
-                // We store them in a list so that we can remove them from the bus later in the
-                // cleanup() method.
-                eventHandlers = new ArrayList<Object>();
-
-                StringResolver resolver = new StringResolver(MainActivity.this, session);
-                logAdapter.setStringResolver(resolver);
-                eventHandlers.add(logAdapter);
-
-                TextView textConnectionStatus = (TextView) findViewById(R.id.textConnectionStatus);
-                eventHandlers.add(new ConnectionStatusPresenter(textConnectionStatus, resolver));
-
-                Button connectButton = (Button) findViewById(R.id.buttonConnect);
-                eventHandlers.add(new DisconnectButtonPresenter(connectButton));
-
-                Button disconnectButton = (Button) findViewById(R.id.buttonDisconnect);
-                eventHandlers.add(new DisconnectButtonPresenter(disconnectButton));
-
-                EditText chatMessage = (EditText) findViewById(R.id.editChatMessage);
-                eventHandlers.add(new ChatMessagePresenter(chatMessage));
-
-                Button chatSend = (Button) findViewById(R.id.buttonChatSend);
-                eventHandlers.add(new ChatSendPresenter(chatSend, chatMessage));
-
-                TextView typing = (TextView) findViewById(R.id.textTypingNotification);
-                eventHandlers.add(new TypingPresenter(typing, resolver));
-
-                Button stopRcButton = (Button) findViewById(R.id.buttonStopStreaming);
-                eventHandlers.add(new StopDisplaySharingPresenter(stopRcButton));
-
-                Button pauseStreamingButton = (Button) findViewById(R.id.buttonPauseStreaming);
-                eventHandlers.add(new PauseStreamingPresenter(pauseStreamingButton));
-
-                eventHandlers.add(new ErrorEventHandler(getSupportFragmentManager(), resolver));
-                eventHandlers.add(MainActivity.this);
-                for (final Object eventHandler : eventHandlers) {
-                    rescueSession.getEventBus().add(eventHandler);
-                }
-
+                addHandlers();
                 // After everything is set up, we connect the session with the given configuration.
                 rescueSession.connect(sessionConfig);
             }
         });
+    }
 
+    private void addHandlers() {
+        // Now we set up our event handlers and add them to the session's event bus.
+        // We store them in a list so that we can remove them from the bus later in the
+        // cleanup() method.
+        eventHandlers = new ArrayList<Object>();
+
+        StringResolver resolver = new StringResolver(MainActivity.this, rescueSession);
+        logAdapter.setStringResolver(resolver);
+        eventHandlers.add(logAdapter);
+
+        TextView textConnectionStatus = (TextView) findViewById(R.id.textConnectionStatus);
+        eventHandlers.add(new ConnectionStatusPresenter(textConnectionStatus, resolver));
+
+        Button connectButton = (Button) findViewById(R.id.buttonConnect);
+        eventHandlers.add(new ConnectButtonPresenter(connectButton));
+
+        Button disconnectButton = (Button) findViewById(R.id.buttonDisconnect);
+        eventHandlers.add(new DisconnectButtonPresenter(disconnectButton));
+
+        EditText chatMessage = (EditText) findViewById(R.id.editChatMessage);
+        eventHandlers.add(new ChatMessagePresenter(chatMessage));
+
+        Button chatSend = (Button) findViewById(R.id.buttonChatSend);
+        eventHandlers.add(new ChatSendPresenter(chatSend, chatMessage));
+
+        TextView typing = (TextView) findViewById(R.id.textTypingNotification);
+        eventHandlers.add(new TypingPresenter(typing, resolver));
+
+        Button stopRcButton = (Button) findViewById(R.id.buttonStopStreaming);
+        eventHandlers.add(new StopDisplaySharingPresenter(stopRcButton));
+
+        Button pauseStreamingButton = (Button) findViewById(R.id.buttonPauseStreaming);
+        eventHandlers.add(new PauseStreamingPresenter(pauseStreamingButton));
+
+        eventHandlers.add(new ErrorEventHandler(getSupportFragmentManager(), resolver));
+        eventHandlers.add(MainActivity.this);
+        for (final Object eventHandler : eventHandlers) {
+            rescueSession.getEventBus().add(eventHandler);
+        }
     }
 
     /**
