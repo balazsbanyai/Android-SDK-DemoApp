@@ -19,7 +19,7 @@ android {
         minSdkVersion 11
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName "2.0"
     }
     buildTypes {
         release {
@@ -34,16 +34,16 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.3.0'
 
     // Basic SDK dependency
-    compile('com.logmein.rescuesdk:core:latest.integration@aar') {
+    compile('com.logmein.rescuesdk:core:2.0.0@aar') {
         transitive = true
     }
 
-    compile('com.logmein.rescuesdk:streamingcore:latest.integration@aar') {
+    compile('com.logmein.rescuesdk:streamingcore:2.0.0@aar') {
         transitive = true
     }
 
     // SDK Resource dependency (optional)
-    compile('com.logmein.rescuesdk:resources:latest.integration@aar') {
+    compile('com.logmein.rescuesdk:resources:2.0.0@aar') {
         transitive = false
     }
 }

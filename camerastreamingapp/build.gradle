@@ -5,11 +5,6 @@ repositories {
 
     mavenLocal()
 
-    //TODO: remove artifactory url before release
-    maven {
-        url 'https://artifactory.intra.3amlabs.net/artifactory/repo'
-    }
-
     maven {
         url 'https://raw.githubusercontent.com/logmeinrescue/android-sdk/master/maven/repository'
     }
@@ -29,7 +24,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
-        versionName "1.1"
+        versionName "2.0"
     }
     buildTypes {
         release {
@@ -46,15 +41,15 @@ dependencies {
     compile 'org.slf4j:slf4j-android:1.7.12'
 
     // Basic SDK dependency
-    compile('com.logmein.rescuesdk:core:latest.integration@aar')
+    compile('com.logmein.rescuesdk:core:2.0.0@aar')
 
     // Camera streaming dependency
-    compile('com.logmein.rescuesdk:camerastreaming:latest.integration@aar') {
+    compile('com.logmein.rescuesdk:camerastreaming:2.0.0@aar') {
         transitive = true
     }
 
     // SDK Resource dependency (optional)
-    compile('com.logmein.rescuesdk:resources:latest.integration@aar') {
+    compile('com.logmein.rescuesdk:resources:2.0.0@aar') {
         transitive = false
     }
     compile project(':core')
