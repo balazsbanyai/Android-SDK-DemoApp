@@ -1,0 +1,57 @@
+apply plugin: 'com.android.application'
+
+repositories {
+    jcenter()
+
+    mavenLocal()
+
+    maven {
+        url 'https://raw.githubusercontent.com/logmeinrescue/android-sdk/master/maven/repository'
+    }
+}
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.3'
+
+    packagingOptions {
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+    }
+    defaultConfig {
+        applicationId "com.logmein.rescuesdkdemo.displaystreamingapp"
+        minSdkVersion 11
+        targetSdkVersion 23
+        versionCode 1
+        versionName "2.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    // Default logger implementation (optional)
+    compile 'org.slf4j:slf4j-android:1.7.12'
+
+    // Basic SDK dependency
+    compile('com.logmein.rescuesdk:core:2.0.0@aar') {
+        transitive = true
+    }
+    // SDK Resource dependency (optional)
+    compile('com.logmein.rescuesdk:resources:2.0.0@aar') {
+        transitive = false
+    }
+
+    compile('com.logmein.rescuesdk:displaystreaming:2.0.0@aar') {
+        transitive = true
+    }
+
+    compile project(':core')
+}
