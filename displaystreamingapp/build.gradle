@@ -41,15 +41,19 @@ dependencies {
     compile 'org.slf4j:slf4j-android:1.7.12'
 
     // Basic SDK dependency
-    compile('com.logmein.rescuesdk:core:2.0.0@aar') {
+    compile('com.logmein.rescuesdk:core:2.1.0@aar') {
         transitive = true
     }
     // SDK Resource dependency (optional)
-    compile('com.logmein.rescuesdk:resources:2.0.0@aar') {
+    compile('com.logmein.rescuesdk:resources:2.1.0@aar') {
         transitive = false
     }
 
-    compile('com.logmein.rescuesdk:displaystreaming:2.0.0@aar') {
+    compile('com.logmein.rescuesdk:displaystreaming:2.1.0@aar') {
+        transitive = true
+    }
+
+    compile('com.logmein.rescuesdk:deviceinfo:2.1.0@aar') {
         transitive = true
     }
 

@@ -34,16 +34,16 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.3.0'
 
     // Basic SDK dependency
-    compile('com.logmein.rescuesdk:core:2.0.0@aar') {
+    compile('com.logmein.rescuesdk:core:2.1.0@aar') {
         transitive = true
     }
 
-    compile('com.logmein.rescuesdk:streamingcore:2.0.0@aar') {
+    compile('com.logmein.rescuesdk:streamingcore:2.1.0@aar') {
         transitive = true
     }
 
     // SDK Resource dependency (optional)
-    compile('com.logmein.rescuesdk:resources:2.0.0@aar') {
+    compile('com.logmein.rescuesdk:resources:2.1.0@aar') {
         transitive = false
     }
 }
