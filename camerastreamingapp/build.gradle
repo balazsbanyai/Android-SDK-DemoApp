@@ -52,6 +52,12 @@ dependencies {
     compile('com.logmein.rescuesdk:resources:2.1.0@aar') {
         transitive = false
     }
+
+    // SDK Resource dependency (optional)
+    compile('com.logmein.rescuesdk:deviceinfo:2.1.0@aar') {
+        transitive = false
+    }
+
     compile project(':core')
 
 }
