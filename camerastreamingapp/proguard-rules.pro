@@ -15,3 +15,6 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-dontwarn com.logmein.rescuesdk.internal.**
+-keep class com.logmein.rescuesdk.internal.** { *; }
