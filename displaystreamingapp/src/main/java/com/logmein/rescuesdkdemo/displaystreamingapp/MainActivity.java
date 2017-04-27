@@ -37,6 +37,10 @@ import com.logmein.rescuesdkresources.StringResolver;
 import java.util.ArrayList;
 import java.util.List;
 
+//import com.logmein.rescuesdk.api.ext.DeviceInfoExtension;
+
+//import com.logmein.rescuesdk.api.ext.DeviceInfoExtension;
+
 /**
  * Activity to demonstrate RescueSDK features.
  */
