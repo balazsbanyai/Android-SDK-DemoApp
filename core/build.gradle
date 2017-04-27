@@ -7,6 +7,10 @@ repositories {
     mavenLocal()
 
     maven {
+        url 'https://artifactory.intra.3amlabs.net/artifactory/repo'
+    }
+
+    maven {
         url 'https://raw.githubusercontent.com/logmeinrescue/android-sdk/master/maven/repository'
     }
 }

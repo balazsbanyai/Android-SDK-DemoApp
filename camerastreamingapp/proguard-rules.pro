@@ -16,5 +16,7 @@
 #   public *;
 #}
 
--dontwarn com.logmein.rescuesdk.internal.**
--keep class com.logmein.rescuesdk.internal.** { *; }
+# THIS MAY HELP SOLVE SOME PROGUARD ISSUE
+
+#-dontwarn com.logmein.rescuesdk.internal.**
+#-keep class com.logmein.rescuesdk.internal.** { *; }

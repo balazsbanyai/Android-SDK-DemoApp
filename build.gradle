@@ -4,9 +4,6 @@ buildscript {
 
     repositories {
         jcenter()
-        maven {
-            url 'https://artifactory.intra.3amlabs.net/artifactory/repo'
-        }
     }
 
     dependencies {
