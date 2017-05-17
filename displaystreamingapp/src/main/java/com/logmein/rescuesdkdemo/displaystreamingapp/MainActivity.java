@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.logmein.rescuesdk.api.ext.DeviceInfoExtension;
 import com.logmein.rescuesdk.api.ext.DisplayStreamingExtension;
 import com.logmein.rescuesdk.api.session.Session;
 import com.logmein.rescuesdk.api.session.SessionFactory;
@@ -142,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
         SessionFactory sessionFactory = SessionFactory.newInstance();
         sessionFactory.useExtension(DisplayStreamingExtension.class);
+        sessionFactory.useExtension(DeviceInfoExtension.class);
         sessionFactory.create(getApplicationContext(), apiKey, new SessionFactory.SessionCreationCallback() {
             @Override
             public void onSessionCreated(Session session) {
