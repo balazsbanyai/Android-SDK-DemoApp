@@ -184,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
         final String apiKey = settings.getApiKey();
         SessionFactory factory = SessionFactory.newInstance();
         factory.useExtension(CameraStreamingExtension.class);
+        factory.useExtension(AudioStreamingExtension.class);
         factory.create(getApplicationContext(), apiKey, new SessionFactory.SessionCreationCallback() {
             @Override
             public void onSessionCreated(Session session) {
