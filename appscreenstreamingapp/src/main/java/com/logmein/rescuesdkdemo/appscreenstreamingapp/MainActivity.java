@@ -1,4 +1,4 @@
-package com.logmein.rescuesdkdemo.displaystreamingapp;
+package com.logmein.rescuesdkdemo.appscreenstreamingapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,11 +14,16 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.logmein.rescuesdk.api.ext.AppScreenStreamingExtension;
 import com.logmein.rescuesdk.api.ext.DeviceInfoExtension;
-import com.logmein.rescuesdk.api.ext.DisplayStreamingExtension;
 import com.logmein.rescuesdk.api.session.Session;
 import com.logmein.rescuesdk.api.session.SessionFactory;
 import com.logmein.rescuesdk.api.session.config.SessionConfig;
+import com.logmein.rescuesdkdemo.appscreenstreamingapp.adapter.ChatLogAdapter;
+import com.logmein.rescuesdkdemo.appscreenstreamingapp.eventhandler.ChatMessagePresenter;
+import com.logmein.rescuesdkdemo.appscreenstreamingapp.eventhandler.ChatSendPresenter;
+import com.logmein.rescuesdkdemo.appscreenstreamingapp.eventhandler.StopDisplaySharingPresenter;
+import com.logmein.rescuesdkdemo.appscreenstreamingapp.eventhandler.TypingPresenter;
 import com.logmein.rescuesdkdemo.core.Settings;
 import com.logmein.rescuesdkdemo.core.SettingsActivity;
 import com.logmein.rescuesdkdemo.core.dialog.PinCodeEntryDialogFragment;
@@ -27,11 +32,6 @@ import com.logmein.rescuesdkdemo.core.eventhandler.ConnectionStatusPresenter;
 import com.logmein.rescuesdkdemo.core.eventhandler.DisconnectButtonPresenter;
 import com.logmein.rescuesdkdemo.core.eventhandler.ErrorEventHandler;
 import com.logmein.rescuesdkdemo.core.eventhandler.PauseStreamingPresenter;
-import com.logmein.rescuesdkdemo.displaystreamingapp.adapter.ChatLogAdapter;
-import com.logmein.rescuesdkdemo.displaystreamingapp.eventhandler.ChatMessagePresenter;
-import com.logmein.rescuesdkdemo.displaystreamingapp.eventhandler.ChatSendPresenter;
-import com.logmein.rescuesdkdemo.displaystreamingapp.eventhandler.StopDisplaySharingPresenter;
-import com.logmein.rescuesdkdemo.displaystreamingapp.eventhandler.TypingPresenter;
 import com.logmein.rescuesdkresources.StringResolver;
 
 import java.util.ArrayList;
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         cleanup();
 
         SessionFactory sessionFactory = SessionFactory.newInstance();
-        sessionFactory.useExtension(DisplayStreamingExtension.class);
+        sessionFactory.useExtension(AppScreenStreamingExtension.class);
         sessionFactory.useExtension(DeviceInfoExtension.class);
         sessionFactory.create(getApplicationContext(), apiKey, new SessionFactory.SessionCreationCallback() {
             @Override

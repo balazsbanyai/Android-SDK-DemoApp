@@ -1,4 +1,4 @@
-package com.logmein.rescuesdkdemo.displaystreamingapp;
+package com.logmein.rescuesdkdemo.devicescreenstreamingapp;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

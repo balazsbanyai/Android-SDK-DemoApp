@@ -1,4 +1,4 @@
-package com.logmein.rescuesdkdemo.displaystreamingapp.eventhandler;
+package com.logmein.rescuesdkdemo.devicescreenstreamingapp.eventhandler;
 
 import android.text.Editable;
 import android.text.TextWatcher;

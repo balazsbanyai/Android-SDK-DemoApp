@@ -21,7 +21,7 @@ android {
         exclude 'META-INF/DEPENDENCIES'
     }
     defaultConfig {
-        applicationId "com.logmein.rescuesdkdemo.displaystreamingapp"
+        applicationId "com.logmein.rescuesdkdemo.devicescreenstreamingapp"
         minSdkVersion 11
         targetSdkVersion androidConfig.targetSdkVersion
         versionCode androidConfig.versionCode

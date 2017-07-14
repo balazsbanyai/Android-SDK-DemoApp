@@ -1,10 +1,10 @@
-package com.logmein.rescuesdkdemo.displaystreamingapp;
+package com.logmein.rescuesdkdemo.appscreenstreamingapp;
 
 import android.app.Application;
 
 import com.logmein.rescuesdk.api.RescueSDK;
 
-public class DisplayStreamingApp extends Application {
+public class AppScreenStreamingApp extends Application {
 
     @Override
     public void onCreate() {

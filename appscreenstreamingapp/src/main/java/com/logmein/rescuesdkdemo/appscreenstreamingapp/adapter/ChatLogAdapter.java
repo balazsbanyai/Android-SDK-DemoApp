@@ -1,4 +1,4 @@
-package com.logmein.rescuesdkdemo.displaystreamingapp.adapter;
+package com.logmein.rescuesdkdemo.appscreenstreamingapp.adapter;
 
 import android.content.Context;
 import android.os.Handler;
@@ -17,7 +17,7 @@ import com.logmein.rescuesdk.api.event.Event;
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.session.event.ConnectionStateEvent;
 import com.logmein.rescuesdk.api.streaming.event.StreamingEvent;
-import com.logmein.rescuesdkdemo.displaystreamingapp.R;
+import com.logmein.rescuesdkdemo.appscreenstreamingapp.R;
 import com.logmein.rescuesdkresources.StringResolver;
 
 import java.text.SimpleDateFormat;

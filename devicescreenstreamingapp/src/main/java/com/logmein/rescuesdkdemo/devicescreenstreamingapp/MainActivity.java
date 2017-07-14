@@ -1,4 +1,4 @@
-package com.logmein.rescuesdkdemo.displaystreamingapp;
+package com.logmein.rescuesdkdemo.devicescreenstreamingapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,11 +27,11 @@ import com.logmein.rescuesdkdemo.core.eventhandler.ConnectionStatusPresenter;
 import com.logmein.rescuesdkdemo.core.eventhandler.DisconnectButtonPresenter;
 import com.logmein.rescuesdkdemo.core.eventhandler.ErrorEventHandler;
 import com.logmein.rescuesdkdemo.core.eventhandler.PauseStreamingPresenter;
-import com.logmein.rescuesdkdemo.displaystreamingapp.adapter.ChatLogAdapter;
-import com.logmein.rescuesdkdemo.displaystreamingapp.eventhandler.ChatMessagePresenter;
-import com.logmein.rescuesdkdemo.displaystreamingapp.eventhandler.ChatSendPresenter;
-import com.logmein.rescuesdkdemo.displaystreamingapp.eventhandler.StopDisplaySharingPresenter;
-import com.logmein.rescuesdkdemo.displaystreamingapp.eventhandler.TypingPresenter;
+import com.logmein.rescuesdkdemo.devicescreenstreamingapp.adapter.ChatLogAdapter;
+import com.logmein.rescuesdkdemo.devicescreenstreamingapp.eventhandler.ChatMessagePresenter;
+import com.logmein.rescuesdkdemo.devicescreenstreamingapp.eventhandler.ChatSendPresenter;
+import com.logmein.rescuesdkdemo.devicescreenstreamingapp.eventhandler.StopDisplaySharingPresenter;
+import com.logmein.rescuesdkdemo.devicescreenstreamingapp.eventhandler.TypingPresenter;
 import com.logmein.rescuesdkresources.StringResolver;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.logmein.rescuesdkdemo.displaystreamingapp.eventhandler;
+package com.logmein.rescuesdkdemo.appscreenstreamingapp.eventhandler;
 
 import android.view.View;
 import android.widget.Button;

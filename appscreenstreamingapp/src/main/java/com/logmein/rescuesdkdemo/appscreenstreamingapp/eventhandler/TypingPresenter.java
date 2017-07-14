@@ -1,4 +1,4 @@
-package com.logmein.rescuesdkdemo.displaystreamingapp.eventhandler;
+package com.logmein.rescuesdkdemo.appscreenstreamingapp.eventhandler;
 
 import android.os.CountDownTimer;
 import android.view.View;
