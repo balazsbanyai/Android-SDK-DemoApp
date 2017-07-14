@@ -1,1 +1,1 @@
-include ':core', ':appstreamingapp', ':camerastreamingapp', ':devicescreenstreamingapp'
+include ':core', ':appscreenstreamingapp', ':camerastreamingapp', ':devicescreenstreamingapp'
