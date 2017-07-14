@@ -14,11 +14,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.logmein.rescuesdk.api.ext.DeviceInfoExtension;
+import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.ext.DeviceScreenStreamingExtension;
 import com.logmein.rescuesdk.api.session.Session;
 import com.logmein.rescuesdk.api.session.SessionFactory;
 import com.logmein.rescuesdk.api.session.config.SessionConfig;
+import com.logmein.rescuesdk.internal.streaming.mediaprojection.MediaProjectionRequestEvent;
 import com.logmein.rescuesdkdemo.core.Settings;
 import com.logmein.rescuesdkdemo.core.SettingsActivity;
 import com.logmein.rescuesdkdemo.core.dialog.PinCodeEntryDialogFragment;
@@ -143,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
 
         SessionFactory sessionFactory = SessionFactory.newInstance();
         sessionFactory.useExtension(DeviceScreenStreamingExtension.class);
-        sessionFactory.useExtension(DeviceInfoExtension.class);
         sessionFactory.create(getApplicationContext(), apiKey, new SessionFactory.SessionCreationCallback() {
             @Override
             public void onSessionCreated(Session session) {
@@ -155,11 +155,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Subscribe
+    public void on(MediaProjectionRequestEvent e) {
+        e.getCallback().onFailure();
+    }
+
     private void addHandlers() {
         // Now we set up our event handlers and add them to the session's event bus.
         // We store them in a list so that we can remove them from the bus later in the
         // cleanup() method.
         eventHandlers = new ArrayList<Object>();
+
+        eventHandlers.add(this); //FIXME remove
 
         StringResolver resolver = new StringResolver(MainActivity.this, rescueSession);
         logAdapter.setStringResolver(resolver);
