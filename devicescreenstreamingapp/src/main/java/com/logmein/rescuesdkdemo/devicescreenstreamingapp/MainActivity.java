@@ -14,12 +14,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.logmein.rescuesdk.api.event.ActivityNeededEvent;
+import com.logmein.rescuesdk.api.event.ActivityResultEvent;
+import com.logmein.rescuesdk.api.event.IntentReceivedEvent;
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.ext.DeviceScreenStreamingExtension;
 import com.logmein.rescuesdk.api.session.Session;
 import com.logmein.rescuesdk.api.session.SessionFactory;
 import com.logmein.rescuesdk.api.session.config.SessionConfig;
-import com.logmein.rescuesdk.internal.streaming.mediaprojection.MediaProjectionRequestEvent;
 import com.logmein.rescuesdkdemo.core.Settings;
 import com.logmein.rescuesdkdemo.core.SettingsActivity;
 import com.logmein.rescuesdkdemo.core.dialog.PinCodeEntryDialogFragment;
@@ -156,8 +158,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void on(MediaProjectionRequestEvent e) {
-        e.getCallback().onFailure();
+    public void onActivityNeeded(ActivityNeededEvent e) {
+
+        getIntent().putExtra(ActivityNeededEvent.ARG_REQUESTCODE, ActivityNeededEvent.REQUEST_CODE);
+        rescueSession.getEventBus().dispatch(new IntentReceivedEvent(this, getIntent()));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        rescueSession.getEventBus().dispatch(new ActivityResultEvent(requestCode, resultCode, data));
     }
 
     private void addHandlers() {
@@ -165,8 +176,6 @@ public class MainActivity extends AppCompatActivity {
         // We store them in a list so that we can remove them from the bus later in the
         // cleanup() method.
         eventHandlers = new ArrayList<Object>();
-
-        eventHandlers.add(this); //FIXME remove
 
         StringResolver resolver = new StringResolver(MainActivity.this, rescueSession);
         logAdapter.setStringResolver(resolver);
