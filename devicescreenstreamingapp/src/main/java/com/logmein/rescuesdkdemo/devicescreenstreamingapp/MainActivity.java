@@ -14,12 +14,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.logmein.rescuesdk.api.event.ActivityNeededEvent;
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.ext.DeviceScreenStreamingExtension;
 import com.logmein.rescuesdk.api.session.Session;
 import com.logmein.rescuesdk.api.session.SessionFactory;
 import com.logmein.rescuesdk.api.session.config.SessionConfig;
-import com.logmein.rescuesdk.internal.streaming.mediaprojection.MediaProjectionRequestEvent;
 import com.logmein.rescuesdkdemo.core.Settings;
 import com.logmein.rescuesdkdemo.core.SettingsActivity;
 import com.logmein.rescuesdkdemo.core.dialog.PinCodeEntryDialogFragment;
@@ -117,20 +117,20 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-
-        menu.add(R.string.settings_menu_label)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
-                        startActivity(intent);
-                        return true;
-                    }
-                })
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.buttonSettings:
+                Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
@@ -156,8 +156,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void on(MediaProjectionRequestEvent e) {
-        e.getCallback().onFailure();
+    public void on(ActivityNeededEvent e) {
+
     }
 
     private void addHandlers() {
