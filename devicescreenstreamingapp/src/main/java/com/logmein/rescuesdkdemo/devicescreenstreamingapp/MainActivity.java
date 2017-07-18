@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -14,7 +15,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.logmein.rescuesdk.api.event.ActivityCreatedEvent;
 import com.logmein.rescuesdk.api.event.ActivityNeededEvent;
+import com.logmein.rescuesdk.api.event.ActivityResultEvent;
+import com.logmein.rescuesdk.api.event.RequestPermissionResultEvent;
 import com.logmein.rescuesdk.api.eventbus.Subscribe;
 import com.logmein.rescuesdk.api.ext.DeviceScreenStreamingExtension;
 import com.logmein.rescuesdk.api.session.Session;
@@ -156,8 +160,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void on(ActivityNeededEvent e) {
+    public void onActivityNeeded(ActivityNeededEvent e) {
+        e.populateIntent(getIntent());
+        rescueSession.getEventBus().dispatch(new ActivityCreatedEvent(this, getIntent()));
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        rescueSession.getEventBus().dispatch(new RequestPermissionResultEvent(requestCode, permissions, grantResults));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        rescueSession.getEventBus().dispatch(new ActivityResultEvent(requestCode, resultCode, data));
     }
 
     private void addHandlers() {
@@ -165,8 +184,6 @@ public class MainActivity extends AppCompatActivity {
         // We store them in a list so that we can remove them from the bus later in the
         // cleanup() method.
         eventHandlers = new ArrayList<Object>();
-
-        eventHandlers.add(this); //FIXME remove
 
         StringResolver resolver = new StringResolver(MainActivity.this, rescueSession);
         logAdapter.setStringResolver(resolver);
