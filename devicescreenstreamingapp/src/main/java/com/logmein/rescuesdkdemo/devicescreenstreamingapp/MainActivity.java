@@ -14,6 +14,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.logmein.rescuesdk.api.CustomizedNotificationBuilder;
+import com.logmein.rescuesdk.api.NotificationCustomizer;
+import com.logmein.rescuesdk.api.RescueSDK;
 import com.logmein.rescuesdk.api.ext.DeviceScreenStreamingExtension;
 import com.logmein.rescuesdk.api.session.Session;
 import com.logmein.rescuesdk.api.session.SessionFactory;
@@ -139,6 +142,13 @@ public class MainActivity extends AppCompatActivity {
         connectButton.setEnabled(false);
 
         cleanup();
+
+        RescueSDK.customizePermissionNotification(new NotificationCustomizer() {
+            @Override
+            public void onCreateNotification(CustomizedNotificationBuilder builder) {
+                builder.setActivityToBeStarted(MainActivity.class);
+            }
+        });
 
         SessionFactory sessionFactory = SessionFactory.newInstance();
         sessionFactory.useExtension(DeviceScreenStreamingExtension.class);
