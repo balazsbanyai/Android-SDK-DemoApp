@@ -1,11 +1,11 @@
 ext {
-    rescuesdkVersion = "2.1.0"
+    rescuesdkVersion = "3.0.0"
     androidConfig = [
             'compileSdkVersion': 25,
             'buildToolsVersion': "25.0.2",
             'targetSdkVersion': 23,
             'supportLibVersion': '25.3.1',
             'versionCode': 1,
-            'versionName': '2.0'
+            'versionName': '3.0'
     ]
 }
