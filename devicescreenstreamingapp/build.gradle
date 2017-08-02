@@ -1,4 +1,4 @@
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.application'
 apply from: '../versionConfig.gradle'
 
 repositories {
@@ -15,7 +15,13 @@ android {
     compileSdkVersion androidConfig.compileSdkVersion
     buildToolsVersion androidConfig.buildToolsVersion
 
+    packagingOptions {
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+    }
     defaultConfig {
+        applicationId "com.logmein.rescuesdkdemo.devicescreenstreamingapp"
         minSdkVersion 11
         targetSdkVersion androidConfig.targetSdkVersion
         versionCode androidConfig.versionCode
@@ -23,7 +29,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -32,18 +38,25 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "com.android.support:appcompat-v7:${androidConfig.supportLibVersion}"
+    // Default logger implementation (optional)
+    compile 'org.slf4j:slf4j-android:1.7.12'
 
     // Basic SDK dependency
     compile("com.logmein.rescuesdk:core:${rescuesdkVersion}@aar") {
         transitive = true
     }
-
-    compile("com.logmein.rescuesdk:streamingcore:${rescuesdkVersion}@aar") {
-        transitive = true
-    }
-
     // SDK Resource dependency (optional)
     compile("com.logmein.rescuesdk:resources:${rescuesdkVersion}@aar") {
         transitive = false
     }
+
+    compile("com.logmein.rescuesdk:devicescreenstreaming:${rescuesdkVersion}@aar") {
+        transitive = true
+    }
+
+    compile("com.logmein.rescuesdk:deviceinfo:${rescuesdkVersion}@aar") {
+        transitive = true
+    }
+
+    compile project(':core')
 }
