@@ -1,0 +1,9 @@
+<resources>
+    <string name="hint_type_here">Type here</string>
+    <string name="btn_send">Send</string>
+    <string name="technician_typing">Technician is typing…</string>
+    <string name="chat_prefix">You say</string>
+    <string name="stop_rc">Stop RC</string>
+    <string name="app_name">App screen streaming demo</string>
+
+</resources>
